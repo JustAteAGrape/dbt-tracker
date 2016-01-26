@@ -2,7 +2,13 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope) {})
+.controller('ActionsController', function($scope, Actions) {
+  $scope.actions = Actions.all();
+
+  $scope.addAction = function() {
+    Actions.add('New Action');
+  };
+})
 
 .controller('EmotionsController', function($scope) {})
 

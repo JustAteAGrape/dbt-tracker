@@ -1,5 +1,20 @@
 angular.module('starter.services', [])
 
+.factory('Actions', function() {
+  var actions = [{
+    name: 'Drugs'
+  }];
+
+  return {
+    all: function() {
+      return actions;
+    },
+    add: function(action) {
+      actions.push({name: action});
+    }
+  }
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

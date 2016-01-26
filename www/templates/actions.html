@@ -1,5 +1,17 @@
 <ion-view view-title="Actions">
     <ion-content>
-      <h2 class="title">Actions Placeholder</h2>
+      <ion-list>
+        <ion-item ng-repeat="action in actions">
+            {{action.name}}
+        </ion-item>
+      </ion-list>
     </ion-content>
+    <div class="button float-button" ng-click="addAction()">
+      <span class="height-fix">
+        <a class="content">
+          <i class="ion-plus-circled"> </i>
+        </a>
+      </span>
+    </div>
 </ion-view>
+
