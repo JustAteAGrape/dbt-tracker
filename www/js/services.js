@@ -1,16 +1,16 @@
 angular.module('starter.services', [])
 
-.factory('Actions', function() {
-  var actions = [{
+.factory('ActionLog', function() {
+  var actionLog = [{
     name: 'Drugs'
   }];
 
   return {
     all: function() {
-      return actions;
+      return actionLog;
     },
     add: function(action) {
-      actions.push({name: action});
+      actionLog.push(action);
     }
   }
 })
