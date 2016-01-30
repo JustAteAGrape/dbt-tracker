@@ -15,48 +15,38 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('Chats', function() {
+.factory('ActionList', function() {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
-  var chats = [{
+  var actions = [{
     id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
+    name: 'Heroin'
   }, {
     id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
+    name: 'Cutting'
   }, {
     id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
+    name: 'Risky Sex'
   }, {
     id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
+    name: 'Suicide'
   }, {
     id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
+    name: 'Aggression'
   }];
 
   return {
     all: function() {
-      return chats;
+      return actions;
     },
     remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
+      actions.splice(actions.indexOf(chat), 1);
     },
     get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
+      for (var i = 0; i < actions.length; i++) {
+        if (actions[i].id === parseInt(chatId)) {
+          return actions[i];
         }
       }
       return null;

@@ -1,12 +1,45 @@
 <ion-view view-title="New Action">
-    <ion-content>
-      <h2 class="title">New Action Placeholder</h2>
-    </ion-content>
-    <div class="button float-button" ng-click="saveAction()">
-      <span class="height-fix">
-        <a class="content">
-          <i class="ion-checkmark-circled"> </i>
-        </a>
-      </span>
-    </div>
+	<ion-content padding="true">
+		<label class="item item-input">
+			<span class="input-label">Date</span>
+			<input type="date">
+		</label>
+		<label class="item item-input item-select">
+			<div class="input-label">
+				Action
+			</div>
+			<select>
+				<!-- <option value="" selected></option> -->
+				<option ng-repeat="action in actionList">
+					{{action.name}}
+				</option>
+			</select>
+		</label>		
+		<label class="item range">
+			<span class="input-label">Urge</span>
+			<i class="icon ion-flame"></i>
+			<input type="range" name="urge">
+			<i class="icon ion-fireball"></i>
+		</label>
+		<li class="item item-toggle">
+			Acted On Urge
+			<label class="toggle toggle-balanced">
+				<input type="checkbox">
+				<div class="track">
+					<div class="handle"></div>
+				</div>
+			</label>
+		</li>
+		<label class="item item-input item-text-wrap">
+			<span class="input-label">Notes</span>
+			<input type="text">
+		</label>
+	</ion-content>
+	<div class="button float-button" ng-click="saveAction()">
+		<span class="height-fix">
+			<a class="content">
+			<i class="ion-checkmark-circled"> </i>
+			</a>
+		</span>
+	</div>
 </ion-view>
