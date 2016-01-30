@@ -60,6 +60,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
+  .state('tab.new', {
+    url: '/new',
+    views: {
+      'tab-track': {
+        templateUrl: 'templates/newAction.html',
+        controller: 'ActionsController'
+      }
+    }
+  })
+
   .state('tab.emotions', {
     url: '/emotions',
     views: {

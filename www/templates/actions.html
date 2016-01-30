@@ -1,12 +1,12 @@
 <ion-view view-title="Actions">
     <ion-content>
       <ion-list>
-        <ion-item ng-repeat="action in actions">
+        <ion-item ng-repeat="action in actionLog">
             {{action.name}}
         </ion-item>
       </ion-list>
     </ion-content>
-    <div class="button float-button" ng-click="addAction()">
+    <div class="button float-button" ui-sref="tab.new">
       <span class="height-fix">
         <a class="content">
           <i class="ion-plus-circled"> </i>
