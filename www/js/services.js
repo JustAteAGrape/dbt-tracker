@@ -1,47 +1,38 @@
 angular.module('starter.services', [])
 
-.factory('ActionLog', function() {
-  var actionLog = [{
-    name: 'Drugs'
-  }];
-
-  return {
-    all: function() {
-      return actionLog;
-    },
-    add: function(action) {
-      actionLog.push(action);
-    }
-  }
-})
-
-.factory('ActionList', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var actions = [{
-    id: 0,
-    name: 'Heroin'
-  }, {
-    id: 1,
-    name: 'Cutting'
-  }, {
-    id: 2,
-    name: 'Risky Sex'
-  }, {
-    id: 3,
-    name: 'Suicide'
-  }, {
-    id: 4,
-    name: 'Aggression'
-  }];
+.factory('TodaysActions', function($http, $filter) {
+  var actions = [];
+  var logExists = false;
+  //Consider using JSONP request instead for async
+  //Diary cards are stored by date
+  $http.get("data/diaryCards-" + $filter('date')(new Date(), "yyyyMMdd") + ".json")
+    .success(function(data){
+      logExists = true;
+      actions = data.actions;
+    })
+    .error(function(){
+      console.log("No diary card found");
+    })
 
   return {
     all: function() {
       return actions;
     },
-    remove: function(chat) {
-      actions.splice(actions.indexOf(chat), 1);
+    add: function(action) {
+      actions.push(action);
+    }
+  }
+})
+
+.factory('ActionList', function($http) {
+  // Might use a resource here that returns a JSON array
+  var actions = [];
+  $http.get("data/actions.json").success(function(data){
+    actions = data;
+  })
+  return {
+    all: function() {
+      return actions;
     },
     get: function(chatId) {
       for (var i = 0; i < actions.length; i++) {

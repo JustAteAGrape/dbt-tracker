@@ -8,11 +8,8 @@
 			<div class="input-label">
 				Action
 			</div>
-			<select>
-				<!-- <option value="" selected></option> -->
-				<option ng-repeat="action in actionList">
-					{{action.name}}
-				</option>
+			<select ng-model="selectAction.selected" ng-options="action.name as action.name for action in actionList">
+				<option value="">{{action.name}}</option>
 			</select>
 		</label>		
 		<label class="item range">

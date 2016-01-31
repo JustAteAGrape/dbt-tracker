@@ -2,16 +2,17 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, ActionLog, ActionList) {
+.controller('ActionsController', function($scope, $state, TodaysActions, ActionList) {
   var addAction = function(action) {
-    ActionLog.add(action);
+    TodaysActions.add(action);
   }
 
-  $scope.actionLog = ActionLog.all();
+  $scope.todaysActions = TodaysActions.all();
   $scope.actionList = ActionList.all();
+  $scope.selectAction = {};
 
   $scope.saveAction = function() {
-    addAction({name: 'New Action'});
+    addAction({name: $scope.selectAction.selected});
     $state.go('tab.actions');
   };
 })
