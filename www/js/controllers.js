@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, TodaysActions, ActionList) {
+.controller('ActionsController', function($scope, $state, LocalStorage, TodaysActions, ActionList) {
   var addAction = function(action) {
     TodaysActions.add(action);
   }
@@ -12,6 +12,7 @@ angular.module('starter.controllers', [])
   $scope.selectAction = {};
 
   $scope.saveAction = function() {
+    LocalStorage.set('test', 'WINNER' );
     addAction({name: $scope.selectAction.selected});
     $state.go('tab.actions');
   };

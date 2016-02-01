@@ -1,8 +1,27 @@
 angular.module('starter.services', [])
 
-.factory('TodaysActions', function($http, $filter) {
+.factory('LocalStorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
+
+.factory('TodaysActions', function($http, $filter, LocalStorage) {
   var actions = [];
   var logExists = false;
+
+  actions.push({name: LocalStorage.get('test', 'LOSER')})
   //Consider using JSONP request instead for async
   //Diary cards are stored by date
   $http.get("data/diaryCards-" + $filter('date')(new Date(), "yyyyMMdd") + ".json")

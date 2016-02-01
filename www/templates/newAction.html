@@ -2,7 +2,7 @@
 	<ion-content padding="true">
 		<label class="item item-input">
 			<span class="input-label">Date</span>
-			<input type="date">
+			<input type="date" value=>
 		</label>
 		<label class="item item-input item-select">
 			<div class="input-label">
@@ -14,8 +14,9 @@
 		</label>		
 		<label class="item range">
 			<span class="input-label">Urge</span>
+			<p>{{urge.strength}}</p>
 			<i class="icon ion-flame"></i>
-			<input type="range" name="urge">
+			<input type="range" name="urge" ng-model="urge.strength" min="0" max="5" step=".1" value="2.5"></input>
 			<i class="icon ion-fireball"></i>
 		</label>
 		<li class="item item-toggle">
