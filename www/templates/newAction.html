@@ -2,35 +2,28 @@
 	<ion-content padding="true">
 		<label class="item item-input">
 			<span class="input-label">Date</span>
-			<input type="date" value=>
+			<input type="date" ng-model="newAction.date" value={{newAction.date}}>
 		</label>
 		<label class="item item-input item-select">
 			<div class="input-label">
 				Action
 			</div>
-			<select ng-model="selectAction.selected" ng-options="action.name as action.name for action in actionList">
+			<select ng-model="newAction.name" ng-options="action.name as action.name for action in actionList">
 				<option value="">{{action.name}}</option>
 			</select>
 		</label>		
 		<label class="item range">
 			<span class="input-label">Urge</span>
-			<p>{{urge.strength}}</p>
+			<p>{{newAction.urge}}</p>
 			<i class="icon ion-flame"></i>
-			<input type="range" name="urge" ng-model="urge.strength" min="0" max="5" step=".1" value="2.5"></input>
+			<input type="range" name="urge" ng-model="newAction.urge" min="0" max="5" step=".1" value={{newAction.urge}}></input>
 			<i class="icon ion-fireball"></i>
 		</label>
-		<li class="item item-toggle">
+		<ion-toggle toggle-class="toggle-balanced" ng-model="newAction.actedOn">
 			Acted On Urge
-			<label class="toggle toggle-balanced">
-				<input type="checkbox">
-				<div class="track">
-					<div class="handle"></div>
-				</div>
-			</label>
-		</li>
+		</ion-toggle>
 		<label class="item item-input item-text-wrap">
-			<span class="input-label">Notes</span>
-			<input type="text">
+			<input type="text" placeholder="Notes" ng-model="newAction.notes">
 		</label>
 	</ion-content>
 	<div class="button float-button" ng-click="saveAction()">

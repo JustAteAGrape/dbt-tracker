@@ -21,17 +21,7 @@ angular.module('starter.services', [])
   var actions = [];
   var logExists = false;
 
-  actions.push({name: LocalStorage.get('test', 'LOSER')})
-  //Consider using JSONP request instead for async
-  //Diary cards are stored by date
-  $http.get("data/diaryCards-" + $filter('date')(new Date(), "yyyyMMdd") + ".json")
-    .success(function(data){
-      logExists = true;
-      actions = data.actions;
-    })
-    .error(function(){
-      console.log("No diary card found");
-    })
+  // actions.push({name: LocalStorage.get('test', 'LOSER')})
 
   return {
     all: function() {
