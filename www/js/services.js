@@ -17,11 +17,21 @@ angular.module('starter.services', [])
   }
 }])
 
+.factory('IdGenerator', function(LocalStorage) {
+  var id = LocalStorage.get("lastId", 0);
+
+  return {
+    getNextId: function() {
+      id++;
+      LocalStorage.set("lastId", id);
+      return id;
+    }
+  };
+})
+
 .factory('TodaysActions', function($http, $filter, LocalStorage) {
   var actions = [];
-  var diary = null;
-
-  diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'));
+  var diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'), null);
 
   if (!(diary == null)) {
     actions = angular.fromJson(diary);  
@@ -34,7 +44,7 @@ angular.module('starter.services', [])
     add: function(action) {
       actions.push(action);
     }
-  }
+  };
 })
 
 .factory('ActionList', function($http) {

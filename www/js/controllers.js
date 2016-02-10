@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, $filter, LocalStorage, TodaysActions, ActionList) {
+.controller('ActionsController', function($scope, $state, $filter, LocalStorage, TodaysActions, ActionList, IdGenerator) {
   var addAction = function(action) {
     TodaysActions.add(action);
   }
@@ -17,6 +17,7 @@ angular.module('starter.controllers', [])
 
   $scope.saveAction = function() {
     addAction({
+      id: IdGenerator.getNextId(),
       name: $scope.newAction.name,
       date: $scope.newAction.date,
       urge: $scope.newAction.urge,
