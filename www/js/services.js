@@ -46,14 +46,6 @@ angular.module('starter.services', [])
   return {
     all: function() {
       return actions;
-    },
-    get: function(chatId) {
-      for (var i = 0; i < actions.length; i++) {
-        if (actions[i].id === parseInt(chatId)) {
-          return actions[i];
-        }
-      }
-      return null;
     }
   };
 });
