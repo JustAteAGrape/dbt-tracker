@@ -16,12 +16,6 @@ angular.module('starter.controllers', [])
   }
 
   $scope.saveAction = function() {
-    // LocalStorage.set('test', 'WINNER' );
-    console.log("date test " + $scope.newAction.name);
-    console.log("date test " + $scope.newAction.date);
-    console.log("date test " + $scope.newAction.urge);
-    console.log("date test " + $scope.newAction.actedOn);
-    console.log("date test " + $scope.newAction.notes);
     addAction({
       name: $scope.newAction.name,
       date: $scope.newAction.date,
@@ -29,10 +23,7 @@ angular.module('starter.controllers', [])
       actedOn: $scope.newAction.actedOn,
       notes: $scope.newAction.notes
     });
-    var jsonTest = [];
-    jsonTest.push($scope.todaysActions);
-    console.log(angular.toJson(jsonTest));
-    // LocalStorage.set($filter('date')(Date.Now(), 'yyyyMMdd');
+    LocalStorage.set($filter('date')(Date.Now, 'yyyyMMdd'), angular.toJson($scope.todaysActions));
     $state.go('tab.actions');
   };
 })

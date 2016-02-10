@@ -19,9 +19,13 @@ angular.module('starter.services', [])
 
 .factory('TodaysActions', function($http, $filter, LocalStorage) {
   var actions = [];
-  var logExists = false;
+  var diary = null;
 
-  // actions.push({name: LocalStorage.get('test', 'LOSER')})
+  diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'));
+
+  if (!(diary == null)) {
+    actions = angular.fromJson(diary);  
+  }  
 
   return {
     all: function() {
