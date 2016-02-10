@@ -1,47 +1,51 @@
 angular.module('starter.services', [])
 
-.factory('ActionLog', function() {
-  var actionLog = [{
-    name: 'Drugs'
-  }];
-
+.factory('LocalStorage', ['$window', function($window) {
   return {
-    all: function() {
-      return actionLog;
+    set: function(key, value) {
+      $window.localStorage[key] = value;
     },
-    add: function(action) {
-      actionLog.push(action);
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
     }
   }
-})
+}])
 
-.factory('ActionList', function() {
-  // Might use a resource here that returns a JSON array
+.factory('TodaysActions', function($http, $filter, LocalStorage) {
+  var actions = [];
+  var diary = null;
 
-  // Some fake testing data
-  var actions = [{
-    id: 0,
-    name: 'Heroin'
-  }, {
-    id: 1,
-    name: 'Cutting'
-  }, {
-    id: 2,
-    name: 'Risky Sex'
-  }, {
-    id: 3,
-    name: 'Suicide'
-  }, {
-    id: 4,
-    name: 'Aggression'
-  }];
+  diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'));
+
+  if (!(diary == null)) {
+    actions = angular.fromJson(diary);  
+  }  
 
   return {
     all: function() {
       return actions;
     },
-    remove: function(chat) {
-      actions.splice(actions.indexOf(chat), 1);
+    add: function(action) {
+      actions.push(action);
+    }
+  }
+})
+
+.factory('ActionList', function($http) {
+  // Might use a resource here that returns a JSON array
+  var actions = [];
+  $http.get("data/actions.json").success(function(data){
+    actions = data;
+  })
+  return {
+    all: function() {
+      return actions;
     },
     get: function(chatId) {
       for (var i = 0; i < actions.length; i++) {

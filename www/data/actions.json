@@ -1,0 +1,26 @@
+[
+	{
+		"id": 0,
+        "name": "Drugs"
+  	}, 
+  	{
+    	"id": 1,
+    	"name": "Alcohol"
+  	}, 
+  	{
+    	"id": 2,
+    	"name": "Self Injury \\ Cutting"
+  	}, 
+  	{
+    	"id": 3,
+    	"name": "Risky Sex"
+  	}, 
+  	{
+    	"id": 4,
+    	"name": "Aggression"
+  	},
+  	{
+    	"id": 5,
+    	"name": "Eating Disorder"
+  	}
+]

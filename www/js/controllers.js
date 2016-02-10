@@ -2,16 +2,28 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, ActionLog, ActionList) {
+.controller('ActionsController', function($scope, $state, $filter, LocalStorage, TodaysActions, ActionList) {
   var addAction = function(action) {
-    ActionLog.add(action);
+    TodaysActions.add(action);
   }
 
-  $scope.actionLog = ActionLog.all();
+  $scope.todaysActions = TodaysActions.all();
   $scope.actionList = ActionList.all();
+  $scope.newAction = {
+    date: new Date(),
+    urge: 2.5,
+    actedOn: false
+  }
 
   $scope.saveAction = function() {
-    addAction({name: 'New Action'});
+    addAction({
+      name: $scope.newAction.name,
+      date: $scope.newAction.date,
+      urge: $scope.newAction.urge,
+      actedOn: $scope.newAction.actedOn,
+      notes: $scope.newAction.notes
+    });
+    LocalStorage.set($filter('date')(Date.Now, 'yyyyMMdd'), angular.toJson($scope.todaysActions));
     $state.go('tab.actions');
   };
 })
