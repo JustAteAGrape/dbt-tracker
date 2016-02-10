@@ -41,8 +41,28 @@ angular.module('starter.services', [])
     all: function() {
       return actions;
     },
+    get: function(id, defaultValue) {
+      for (var i in actions) {
+        if (actions[i].id == id) {
+          return actions[i];
+        }
+      }
+      return defaultValue;
+    },
     add: function(action) {
       actions.push(action);
+    },
+    edit: function(action){
+      for (var i in actions) {
+        if (actions[i].id == action.id) {
+          actions[i].name = action.name;
+          actions[i].date = action.date;
+          actions[i].urge = action.urge;
+          actions[i].actedOn = action.actedOn;
+          actions[i].notes = action.notes;
+          break;
+        }
+      }
     }
   };
 })

@@ -59,6 +59,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
+  .state('tab.editAction', {
+    url: '/editAction/:aId',
+    views: {
+      'tab-track': {
+        templateUrl: 'templates/newAction.html',
+        controller: 'ActionsController'
+      }
+    }
+  })
+
   .state('tab.new', {
     url: '/new',
     views: {
