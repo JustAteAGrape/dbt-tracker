@@ -16,13 +16,15 @@ angular.module('starter.controllers', [])
   $scope.actionList = ActionList.all();
 
   if (curAction == null) {
-    $scope.newAction = {
+    $scope.title = "New Action"
+    $scope.myAction = {
       date: new Date(),
       urge: 2.5,
       actedOn: false
     }
   } else {
-    $scope.newAction = {
+    $scope.title = "Edit Action"
+    $scope.myAction = {
       id: curAction.id,
       name: curAction.name,
       date: new Date(curAction.date),
@@ -36,24 +38,24 @@ angular.module('starter.controllers', [])
     if (id == null) {
       addAction({
         id: IdGenerator.getNextId(),
-        name: $scope.newAction.name,
-        date: $scope.newAction.date,
-        urge: $scope.newAction.urge,
-        actedOn: $scope.newAction.actedOn,
-        notes: $scope.newAction.notes
+        name: $scope.myAction.name,
+        date: $scope.myAction.date,
+        urge: $scope.myAction.urge,
+        actedOn: $scope.myAction.actedOn,
+        notes: $scope.myAction.notes
       });
     } else {
       editAction({
         id: id,
-        name: $scope.newAction.name,
-        date: $scope.newAction.date,
-        urge: $scope.newAction.urge,
-        actedOn: $scope.newAction.actedOn,
-        notes: $scope.newAction.notes
+        name: $scope.myAction.name,
+        date: $scope.myAction.date,
+        urge: $scope.myAction.urge,
+        actedOn: $scope.myAction.actedOn,
+        notes: $scope.myAction.notes
       });
     }
     LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
-    $state.go('tab.actions');
+    $state.go('tab.todaysActions');
   };
 })
 

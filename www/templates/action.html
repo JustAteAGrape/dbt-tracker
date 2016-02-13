@@ -1,29 +1,29 @@
-<ion-view view-title="New Action">
+<ion-view view-title={{title}}>
 	<ion-content padding="true">
 		<label class="item item-input">
 			<span class="input-label">Date</span>
-			<input type="date" ng-model="newAction.date" value={{newAction.date}}>
+			<input type="date" ng-model="myAction.date" value={{myAction.date}}>
 		</label>
 		<label class="item item-input item-select">
 			<div class="input-label">
 				Action
 			</div>
-			<select ng-model="newAction.name" ng-options="action.name as action.name for action in actionList" ng-selected={{newAction.name}}>
+			<select ng-model="myAction.name" ng-options="action.name as action.name for action in actionList" ng-selected={{myAction.name}}>
 				<option value="">{{action.name}}</option>
 			</select>
 		</label>		
 		<label class="item range">
 			<span class="input-label">Urge</span>
-			<p>{{newAction.urge}}</p>
+			<p>{{myAction.urge}}</p>
 			<i class="icon ion-flame"></i>
-			<input type="range" name="urge" ng-model="newAction.urge" min="0" max="5" step=".1" value={{newAction.urge}}></input>
+			<input type="range" name="urge" ng-model="myAction.urge" min="0" max="5" step=".1" value={{myAction.urge}}></input>
 			<i class="icon ion-fireball"></i>
 		</label>
-		<ion-toggle toggle-class="toggle-balanced" ng-model="newAction.actedOn">
+		<ion-toggle toggle-class="toggle-balanced" ng-model="myAction.actedOn">
 			Acted On Urge
 		</ion-toggle>
 		<label class="item item-input item-text-wrap">
-			<input type="text" placeholder="Notes" ng-model="newAction.notes">
+			<input type="text" placeholder="Notes" ng-model="myAction.notes">
 		</label>
 	</ion-content>
 	<div class="button float-button" ng-click="saveAction()">
