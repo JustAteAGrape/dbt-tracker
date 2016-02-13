@@ -17,11 +17,26 @@ angular.module('starter.services', [])
   }
 }])
 
-.factory('TodaysActions', function($http, $filter, LocalStorage) {
-  var actions = [];
-  var diary = null;
+.factory('IdGenerator', function(LocalStorage) {
+  var id = LocalStorage.get("lastId", 0);
 
-  diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'));
+  return {
+    getNextId: function() {
+      id++;
+      LocalStorage.set("lastId", id);
+      return id;
+    }
+  };
+})
+
+.factory('TodaysActions', function($http, $filter, $window, $ionicHistory, LocalStorage) {
+  var actions = [];
+  console.log(Date.now());
+  var diary = LocalStorage.get($filter('date')(new Date, 'yyyyMMdd'), null);
+
+  // $window.localStorage.clear();
+  //   $ionicHistory.clearCache();
+  //   $ionicHistory.clearHistory();
 
   if (!(diary == null)) {
     actions = angular.fromJson(diary);  
@@ -31,10 +46,30 @@ angular.module('starter.services', [])
     all: function() {
       return actions;
     },
+    get: function(id, defaultValue) {
+      for (var i in actions) {
+        if (actions[i].id == id) {
+          return actions[i];
+        }
+      }
+      return defaultValue;
+    },
     add: function(action) {
       actions.push(action);
+    },
+    edit: function(action){
+      for (var i in actions) {
+        if (actions[i].id == action.id) {
+          actions[i].name = action.name;
+          actions[i].date = action.date;
+          actions[i].urge = action.urge;
+          actions[i].actedOn = action.actedOn;
+          actions[i].notes = action.notes;
+          break;
+        }
+      }
     }
-  }
+  };
 })
 
 .factory('ActionList', function($http) {

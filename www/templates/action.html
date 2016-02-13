@@ -8,7 +8,7 @@
 			<div class="input-label">
 				Action
 			</div>
-			<select ng-model="newAction.name" ng-options="action.name as action.name for action in actionList">
+			<select ng-model="newAction.name" ng-options="action.name as action.name for action in actionList" ng-selected={{newAction.name}}>
 				<option value="">{{action.name}}</option>
 			</select>
 		</label>		
