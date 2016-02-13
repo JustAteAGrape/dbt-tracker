@@ -29,9 +29,14 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('TodaysActions', function($http, $filter, LocalStorage) {
+.factory('TodaysActions', function($http, $filter, $window, $ionicHistory, LocalStorage) {
   var actions = [];
-  var diary = LocalStorage.get($filter('date')(Date.Now, 'yyyyMMdd'), null);
+  console.log(Date.now());
+  var diary = LocalStorage.get($filter('date')(new Date, 'yyyyMMdd'), null);
+
+  // $window.localStorage.clear();
+  //   $ionicHistory.clearCache();
+  //   $ionicHistory.clearHistory();
 
   if (!(diary == null)) {
     actions = angular.fromJson(diary);  

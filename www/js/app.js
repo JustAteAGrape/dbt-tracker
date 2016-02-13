@@ -49,11 +49,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('tab.actions', {
-    url: '/actions',
+  .state('tab.todaysActions', {
+    url: '/todaysActions',
     views: {
       'tab-track': {
-        templateUrl: 'templates/actions.html',
+        templateUrl: 'templates/todaysActions.html',
         controller: 'ActionsController'
       }
     }
@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/editAction/:aId',
     views: {
       'tab-track': {
-        templateUrl: 'templates/newAction.html',
+        templateUrl: 'templates/action.html',
         controller: 'ActionsController'
       }
     }
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/new',
     views: {
       'tab-track': {
-        templateUrl: 'templates/newAction.html',
+        templateUrl: 'templates/action.html',
         controller: 'ActionsController'
       }
     }

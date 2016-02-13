@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
     $scope.newAction = {
       id: curAction.id,
       name: curAction.name,
-      date: curAction.date,
+      date: new Date(curAction.date),
       urge: curAction.urge,
       actedOn: curAction.actedOn,
       notes: curAction.notes
@@ -52,7 +52,7 @@ angular.module('starter.controllers', [])
         notes: $scope.newAction.notes
       });
     }
-    LocalStorage.set($filter('date')(Date.Now, 'yyyyMMdd'), angular.toJson($scope.todaysActions));
+    LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
     $state.go('tab.actions');
   };
 })
