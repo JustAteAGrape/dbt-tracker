@@ -31,8 +31,7 @@ angular.module('starter.services', [])
 
 .factory('TodaysActions', function($http, $filter, $window, $ionicHistory, LocalStorage) {
   var actions = [];
-  console.log(Date.now());
-  var diary = LocalStorage.get($filter('date')(new Date, 'yyyyMMdd'), null);
+  var diary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
 
   // $window.localStorage.clear();
   //   $ionicHistory.clearCache();
