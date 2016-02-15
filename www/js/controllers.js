@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, $filter, LocalStorage, TodaysActions, ActionList, IdGenerator) {
+.controller('ActionsController', function($scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, IdGenerator) {
   var id = $state.params.aId;
   var curAction = TodaysActions.get(id, null);
   var addAction = function(action) {
@@ -35,27 +35,34 @@ angular.module('starter.controllers', [])
   }
 
   $scope.saveAction = function() {
-    if (id == null) {
-      addAction({
-        id: IdGenerator.getNextId(),
-        name: $scope.myAction.name,
-        date: $scope.myAction.date,
-        urge: $scope.myAction.urge,
-        actedOn: $scope.myAction.actedOn,
-        notes: $scope.myAction.notes
+    if ($scope.myAction.name == null) {
+      $ionicPopup.alert({
+        title: 'Missing Data',
+        template: 'Please choose an action from the list.'
       });
     } else {
-      editAction({
-        id: id,
-        name: $scope.myAction.name,
-        date: $scope.myAction.date,
-        urge: $scope.myAction.urge,
-        actedOn: $scope.myAction.actedOn,
-        notes: $scope.myAction.notes
-      });
+      if (id == null) {
+        addAction({
+          id: IdGenerator.getNextId(),
+          name: $scope.myAction.name,
+          date: $scope.myAction.date,
+          urge: $scope.myAction.urge,
+          actedOn: $scope.myAction.actedOn,
+          notes: $scope.myAction.notes
+        });
+      } else {
+        editAction({
+          id: id,
+          name: $scope.myAction.name,
+          date: $scope.myAction.date,
+          urge: $scope.myAction.urge,
+          actedOn: $scope.myAction.actedOn,
+          notes: $scope.myAction.notes
+        });
+      }
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
+      $state.go('tab.todaysActions');
     }
-    LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
-    $state.go('tab.todaysActions');
   };
 })
 
