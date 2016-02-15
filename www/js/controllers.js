@@ -11,6 +11,9 @@ angular.module('starter.controllers', [])
   var editAction = function(modifiedAction) {
     TodaysActions.edit(modifiedAction);
   }
+  var removeAction = function(action) {
+    TodaysActions.remove(action);
+  }
 
   $scope.todaysActions = TodaysActions.all();
   $scope.actionList = ActionList.all();
@@ -65,16 +68,17 @@ angular.module('starter.controllers', [])
     }
   };
 
-  $scope.removeAction = function() {
+  $scope.removeAction = function(action) {
     var confirm = $ionicPopup.confirm({
       title: 'Delete Action',
       template: 'Are you sure you want to delete this action?'
     });
     confirm.then(function(res) {
       if(res) {
-        console.log("TODO: Delete Me!");
+        removeAction(action);
+        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
       } else {
-        console.log("TODO: Don't delete me bro!");
+        console.log("user canceld action delete");
       }
     });
   }

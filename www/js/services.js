@@ -56,7 +56,7 @@ angular.module('starter.services', [])
     add: function(action) {
       actions.push(action);
     },
-    edit: function(action){
+    edit: function(action) {
       for (var i in actions) {
         if (actions[i].id == action.id) {
           actions[i].name = action.name;
@@ -67,6 +67,9 @@ angular.module('starter.services', [])
           break;
         }
       }
+    },
+    remove: function(action) {
+      actions.splice(actions.indexOf(action), 1);
     }
   };
 })
