@@ -1,7 +1,7 @@
 [
-	{
-		"id": 0,
-        "name": "Drugs"
+	  {
+		  "id": 0,
+      "name": "Drugs"
   	}, 
   	{
     	"id": 1,
@@ -9,11 +9,11 @@
   	}, 
   	{
     	"id": 2,
-    	"name": "Self Injury \\ Cutting"
+    	"name": "Self Injury"
   	}, 
   	{
     	"id": 3,
-    	"name": "Risky Sex"
+    	"name": "Sex"
   	}, 
   	{
     	"id": 4,
@@ -21,6 +21,6 @@
   	},
   	{
     	"id": 5,
-    	"name": "Eating Disorder"
+    	"name": "Purging \\ Restricting"
   	}
 ]
