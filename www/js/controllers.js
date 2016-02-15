@@ -64,6 +64,20 @@ angular.module('starter.controllers', [])
       $state.go('tab.todaysActions');
     }
   };
+
+  $scope.removeAction = function() {
+    var confirm = $ionicPopup.confirm({
+      title: 'Delete Action',
+      template: 'Are you sure you want to delete this action?'
+    });
+    confirm.then(function(res) {
+      if(res) {
+        console.log("TODO: Delete Me!");
+      } else {
+        console.log("TODO: Don't delete me bro!");
+      }
+    });
+  }
 })
 
 .controller('EmotionsController', function($scope) {})
