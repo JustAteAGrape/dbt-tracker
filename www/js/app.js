@@ -65,7 +65,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       'tab-track': {
         templateUrl: 'templates/action.html',
         controller: 'ActionsController'
-      }
+      },
+
     }
   })
 
