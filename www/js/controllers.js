@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, IdGenerator) {
+.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, IdGenerator) {
   var id = $state.params.aId;
   var curAction = TodaysActions.get(id, null);
   var addAction = function(action) {
@@ -10,6 +10,9 @@ angular.module('starter.controllers', [])
   }
   var editAction = function(modifiedAction) {
     TodaysActions.edit(modifiedAction);
+  }
+  var removeAction = function(action) {
+    TodaysActions.remove(action);
   }
 
   $scope.todaysActions = TodaysActions.all();
@@ -33,6 +36,10 @@ angular.module('starter.controllers', [])
       notes: curAction.notes
     }
   }
+
+  $scope.tapAction = function(actionId) {
+    $window.location.href = '#/tab/editAction/' + actionId;
+  };
 
   $scope.saveAction = function() {
     if ($scope.myAction.name == null) {
@@ -63,6 +70,21 @@ angular.module('starter.controllers', [])
       LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
       $state.go('tab.todaysActions');
     }
+  };
+
+  $scope.removeAction = function(action) {
+    var confirm = $ionicPopup.confirm({
+      title: 'Delete Action',
+      template: 'Are you sure you want to delete this action?'
+    });
+    confirm.then(function(res) {
+      if(res) {
+        removeAction(action);
+        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
+      } else {
+        console.log("user canceld action delete");
+      }
+    });
   };
 })
 
