@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('TrackController', function($scope) {})
 
-.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, IdGenerator) {
+.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var curAction = TodaysActions.get(id, null);
   var addAction = function(action) {
@@ -17,13 +17,15 @@ angular.module('starter.controllers', [])
 
   $scope.todaysActions = TodaysActions.all();
   $scope.actionList = ActionList.all();
+  $scope.skillRatings = SkillRatings.all();
 
   if (curAction == null) {
     $scope.title = "New Action"
     $scope.myAction = {
       date: new Date(),
       urge: 2.5,
-      actedOn: false
+      actedOn: false,
+      skillRating: SkillRatings.get(0, null)
     }
   } else {
     $scope.title = "Edit Action"
@@ -33,6 +35,7 @@ angular.module('starter.controllers', [])
       date: new Date(curAction.date),
       urge: curAction.urge,
       actedOn: curAction.actedOn,
+      skillRating: curAction.skillRating,
       notes: curAction.notes
     }
   }
@@ -55,6 +58,7 @@ angular.module('starter.controllers', [])
           date: $scope.myAction.date,
           urge: $scope.myAction.urge,
           actedOn: $scope.myAction.actedOn,
+          skillRating: $scope.myAction.skillRating,
           notes: $scope.myAction.notes
         });
       } else {
@@ -64,6 +68,7 @@ angular.module('starter.controllers', [])
           date: $scope.myAction.date,
           urge: $scope.myAction.urge,
           actedOn: $scope.myAction.actedOn,
+          skillRating: $scope.myAction.skillRating,
           notes: $scope.myAction.notes
         });
       }

@@ -1,0 +1,34 @@
+[
+	  {
+		  "id": 0,
+      "name": "Not thought about or used"
+  	}, 
+  	{
+    	"id": 1,
+    	"name": "Thought about, not used, didn't want to"
+  	}, 
+  	{
+    	"id": 2,
+    	"name": "Thought about, not used, wanted to"
+  	}, 
+  	{
+    	"id": 3,
+    	"name": "Tried but couldn't use them"
+  	}, 
+  	{
+    	"id": 4,
+    	"name": "Tried, could do them but they didn't help"
+  	},
+  	{
+    	"id": 5,
+    	"name": "Tried, could use them, helped"
+  	},
+    {
+      "id": 6,
+      "name": "Didn't try, used them, didn't help"
+    },
+    {
+      "id": 7,
+      "name": "Didn't try, used them, helped"
+    }
+]
