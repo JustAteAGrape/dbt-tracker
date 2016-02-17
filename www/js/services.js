@@ -63,6 +63,7 @@ angular.module('starter.services', [])
           actions[i].date = action.date;
           actions[i].urge = action.urge;
           actions[i].actedOn = action.actedOn;
+          actions[i].skillRating = action.skillRating;
           actions[i].notes = action.notes;
           break;
         }
