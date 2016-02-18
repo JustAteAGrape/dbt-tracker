@@ -1,6 +1,8 @@
 angular.module('starter.controllers', [])
 
-.controller('TrackController', function($scope) {})
+.controller('TrackController', function($scope) {
+
+})
 
 .controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
@@ -93,7 +95,12 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EmotionsController', function($scope) {})
+.controller('EmotionsController', function($scope, EmotionList) {
+  var emotionPromise = EmotionList.get();
+  emotionPromise.then(function(result){
+    $scope.emotionList = result;
+  });  
+})
 
 .controller('CopingController', function($scope) {})
 

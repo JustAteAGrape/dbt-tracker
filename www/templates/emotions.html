@@ -1,5 +1,23 @@
 <ion-view view-title="Emotions">
     <ion-content>
-      <h2 class="title">Emotions Placeholder</h2>
+		<!-- <ion-item ng-repeat="emotion in emotionList | limitTo : 4"> -->
+			<div class="row">
+				<div class="col" ng-repeat="emotion in emotionList | limitTo : 4">
+					<img src="img/{{emotion.name}}.png">
+					<p>{{emotion.name}}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col" ng-repeat="emotion in emotionList | limitTo : 4 : 4">
+					<img src="img/{{emotion.name}}.png">
+					<p>{{emotion.name}}</p>
+				</div>
+			</div>
+		<!-- </ion-item> -->
+		<!-- <ion-item ng-repeat="emotion in emotionList | limitTo : 4 : 4">
+			<div class="row">
+				<div class="col col-25">{{emotion.name}}</div>
+			</div>
+		</ion-item> -->
     </ion-content>
 </ion-view>

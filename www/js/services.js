@@ -75,6 +75,19 @@ angular.module('starter.services', [])
   };
 })
 
+.factory('DiaryPreLoad', function($http) {
+  // Might use a resource here that returns a JSON array
+  var actions = [];
+  $http.get("data/actions.json").success(function(data){
+    LocalStorage.set('actionList', data);
+  })
+  return {
+    all: function() {
+      return actions;
+    }
+  };
+})
+
 .factory('SkillRatings', function($http) {
   // Might use a resource here that returns a JSON array
   var skillRatings = [];
@@ -107,4 +120,14 @@ angular.module('starter.services', [])
       return actions;
     }
   };
+})
+
+.factory('EmotionList', function($http) {
+  // Might use a resource here that returns a JSON array
+  var getEmotions = function() {
+    return $http.get("data/emotions.json").then(function(response){
+      return response.data;
+    });
+  };
+  return { get: getEmotions };
 });

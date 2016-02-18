@@ -1,0 +1,31 @@
+[
+	  {
+		  "id": 0,
+      "name": "Anger"
+  	}, 
+  	{
+    	"id": 1,
+    	"name": "Fear"
+  	}, 
+  	{
+    	"id": 2,
+    	"name": "Happy",
+      "src": "http://images.clipartpanda.com/laughing-smiley-face-clip-art-smiley-face-clip-art10.jpeg"
+  	}, 
+  	{
+    	"id": 3,
+    	"name": "Anxious"
+  	}, 
+  	{
+    	"id": 4,
+    	"name": "Sad"
+  	},
+  	{
+    	"id": 5,
+    	"name": "Shame"
+  	},
+    {
+      "id": 6,
+      "name": "Misery"
+    }
+]
