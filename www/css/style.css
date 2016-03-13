@@ -31,3 +31,17 @@ body {
   margin-top: -20px; /* Note, this must be half the font size */
   color: $light;
 }
+
+.emotion {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.emotion .emotion-image {
+  display:block;
+  margin:auto;
+} 
+
+.emotion .emotion-text {
+  text-align: center;
+} 

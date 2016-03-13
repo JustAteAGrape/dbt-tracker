@@ -98,7 +98,10 @@ angular.module('starter.controllers', [])
 .controller('EmotionsController', function($scope, EmotionList) {
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
-    $scope.emotionList = result;
+    $scope.emotionTuples = [];
+    while(result.length) {
+      $scope.emotionTuples.push(result.splice(0,2));
+    }
   });  
 })
 
