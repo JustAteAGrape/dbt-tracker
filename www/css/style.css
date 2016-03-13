@@ -32,16 +32,17 @@ body {
   color: $light;
 }
 
-.emotion {
-  margin-left:auto;
-  margin-right:auto;
+.emotion-img {
+  height: 20%;
+  width: 20%;
+  padding: 0px !important;
 }
 
-.emotion .emotion-image {
+hr {
+  border: 0;
+  clear:both;
   display:block;
-  margin:auto;
-} 
-
-.emotion .emotion-text {
-  text-align: center;
-} 
+  width: 100%;               
+  background-color:#000000;
+  height: 1px;
+}

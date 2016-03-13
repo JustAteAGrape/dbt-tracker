@@ -1,9 +1,12 @@
 <ion-view view-title="Emotions">
     <ion-content>
-		<div class="row" ng-repeat="emotionList in emotionTuples">
-			<div class="col emotion" ng-repeat="emotion in emotionList">
-				<img class="emotion-image" src="img/{{emotion.name}}.png">
-				<p class="emotion-text">{{emotion.name}}</p>
+		<div class="row" ng-repeat="emotionTuple in emotionTuples">
+			<div class="col text-center" ng-repeat="emotion in emotionTuple">				
+				<img class="emotion-img" src="img/emotions/{{emotion.name}}.png">
+				<p>{{emotion.name}}</p>
+				<label class="range range-balanced">
+					<input type="range" min="0" max="5" step="1" value=0></input>
+				</label>				
 			</div>
 		</div>
     </ion-content>
