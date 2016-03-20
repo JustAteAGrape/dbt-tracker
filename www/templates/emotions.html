@@ -2,7 +2,7 @@
     <ion-content>
 		<div class="row" ng-repeat="emotionTuple in emotionTuples">
 			<div class="col text-center" ng-repeat="emotion in emotionTuple">				
-				<img class="emotion-img" src="img/emotions/{{emotion.name}}.png">
+				<img class="emotion-img" src="{{emotion.src}}">
 				<p>{{emotion.name}}</p>
 				<label class="range range-balanced">
 					<input type="range" min="0" max="5" step="1" value=0></input>
