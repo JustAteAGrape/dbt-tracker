@@ -29,63 +29,56 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('TodaysActions', function($http, $filter, $window, $ionicHistory, LocalStorage) {
-  var actions = [];
-  var diary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
+.factory('TodaysDiary', function($filter, LocalStorage) {
+  var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
+  var diary = null;
 
-  // $window.localStorage.clear();
-  //   $ionicHistory.clearCache();
-  //   $ionicHistory.clearHistory();
+  if (!(rawDiary == null)) {
+    diary = angular.fromJson(rawDiary);
+  }
 
-  if (!(diary == null)) {
-    actions = angular.fromJson(diary);  
-  }  
+  if (diary == null) {
+    diary = {
+      actions: [],
+      emotions: []
+    }
+  }
+
 
   return {
-    all: function() {
-      return actions;
+    getActions: function() {
+      return diary.actions;
     },
-    get: function(id, defaultValue) {
-      for (var i in actions) {
-        if (actions[i].id == id) {
-          return actions[i];
+    getActionById: function(id, defaultValue) {
+      for (var i in diary.actions) {
+        if (diary.actions[i].id == id) {
+          return diary.actions[i];
         }
       }
       return defaultValue;
     },
-    add: function(action) {
-      actions.push(action);
+    addAction: function(action) {
+      diary.actions.push(action);
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
     },
-    edit: function(action) {
-      for (var i in actions) {
-        if (actions[i].id == action.id) {
-          actions[i].name = action.name;
-          actions[i].date = action.date;
-          actions[i].urge = action.urge;
-          actions[i].actedOn = action.actedOn;
-          actions[i].skillRating = action.skillRating;
-          actions[i].notes = action.notes;
+    editAction: function(action) {
+      for (var i in diary.actions) {
+        if (diary.actions[i].id == action.id) {
+          diary.actions[i].name = action.name;
+          diary.actions[i].date = action.date;
+          diary.actions[i].urge = action.urge;
+          diary.actions[i].actedOn = action.actedOn;
+          diary.actions[i].skillRating = action.skillRating;
+          diary.actions[i].notes = action.notes;
           break;
-        }
+        }        
       }
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
     },
-    remove: function(action) {
-      actions.splice(actions.indexOf(action), 1);
+    removeAction: function(action) {
+      diary.actions.splice(diary.actions.indexOf(action), 1);
     }
-  };
-})
-
-.factory('DiaryPreLoad', function($http) {
-  // Might use a resource here that returns a JSON array
-  var actions = [];
-  $http.get("data/actions.json").success(function(data){
-    LocalStorage.set('actionList', data);
-  })
-  return {
-    all: function() {
-      return actions;
-    }
-  };
+  }
 })
 
 .factory('SkillRatings', function($http) {

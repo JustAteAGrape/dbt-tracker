@@ -4,20 +4,20 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysDiary, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
-  var curAction = TodaysActions.get(id, null);
-  var addAction = function(action) {
-    TodaysActions.add(action);
-  }
-  var editAction = function(modifiedAction) {
-    TodaysActions.edit(modifiedAction);
-  }
-  var removeAction = function(action) {
-    TodaysActions.remove(action);
-  }
+  var curAction = TodaysDiary.getActionById(id, null);
+  // var addAction = function(action) {
+  //   TodaysDiary.add(action);
+  // }
+  // var editAction = function(modifiedAction) {
+  //   TodaysDiary.edit(modifiedAction);
+  // }
+  // var removeAction = function(action) {
+  //   TodaysDiary.remove(action);
+  // }
 
-  $scope.todaysActions = TodaysActions.all();
+  $scope.todaysActions = TodaysDiary.getActions();
   $scope.actionList = ActionList.all();
   $scope.skillRatings = SkillRatings.all();
 
@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
       });
     } else {
       if (id == null) {
-        addAction({
+        TodaysDiary.addAction({
           id: IdGenerator.getNextId(),
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -64,7 +64,7 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       } else {
-        editAction({
+        TodaysDiary.editAction({
           id: id,
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -74,7 +74,6 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       }
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
       $state.go('tab.todaysActions');
     }
   };
@@ -86,8 +85,7 @@ angular.module('starter.controllers', [])
     });
     confirm.then(function(res) {
       if(res) {
-        removeAction(action);
-        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
+        TodaysDiary.removeAction(action);
       } else {
         console.log("user canceld action delete");
       }
@@ -110,29 +108,4 @@ angular.module('starter.controllers', [])
 
 .controller('HistoryController', function($scope) {})
 
-.controller('SettingsController', function($scope) {})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
+.controller('SettingsController', function($scope) {});
