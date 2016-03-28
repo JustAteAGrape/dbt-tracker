@@ -7,15 +7,6 @@ angular.module('starter.controllers', [])
 .controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysDiary, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var curAction = TodaysDiary.getActionById(id, null);
-  // var addAction = function(action) {
-  //   TodaysDiary.add(action);
-  // }
-  // var editAction = function(modifiedAction) {
-  //   TodaysDiary.edit(modifiedAction);
-  // }
-  // var removeAction = function(action) {
-  //   TodaysDiary.remove(action);
-  // }
 
   $scope.todaysActions = TodaysDiary.getActions();
   $scope.actionList = ActionList.all();
