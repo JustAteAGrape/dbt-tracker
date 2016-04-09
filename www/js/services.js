@@ -77,7 +77,31 @@ angular.module('starter.services', [])
     },
     removeAction: function(action) {
       diary.actions.splice(diary.actions.indexOf(action), 1);
-    }
+    },
+    getEmotions: function() {
+      return diary.emotions;
+    },
+    getEmotionByName: function(name, defaultValue) {
+      for (var entry in diary.emotions) {
+        var emotion = diary.emotions[entry];
+        if (emotion.name == name) {
+          return emotion;
+        }
+      }
+    },
+    addEmotion: function(emotion) {
+      diary.emotions.push(emotion);
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+    },
+    editEmotion: function(emotion) {
+      for (var i in diary.emotions) {
+        if (diary.emotions[i].name == emotion.name) {
+          diary.emotions[i].strength = emotion.strength;
+          break;
+        }        
+      }
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+    },
   }
 })
 

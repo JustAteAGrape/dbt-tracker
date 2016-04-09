@@ -84,15 +84,89 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EmotionsController', function($scope, EmotionList) {
+.controller('EmotionsController', function($scope, TodaysDiary, EmotionList) {
+  var diaryEmotions = [];
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
+    for (var entry in result) {
+      var rawEmotion = result[entry];
+      if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+        TodaysDiary.addEmotion({
+          name: rawEmotion.name,
+          src: rawEmotion.src,
+          strength: 0
+        });
+        break;
+      }
+    }
     $scope.emotionList = result;
     $scope.emotionTuples = [];
     while(result.length) {
       $scope.emotionTuples.push(result.splice(0,2));
     }
-  });  
+  });
+
+  // var emotionPromise = EmotionList.get();
+  // emotionPromise.then(function(result){
+  //   rawEmotionList = result;
+  // });
+
+  // for (var rawEmotion in rawEmotionList) {
+  //   if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+  //     TodaysDiary.addEmotion({
+  //       name: rawEmotion.name,
+  //       src: rawEmotion.src,
+  //       strength: 0
+  //     });
+  //     break;
+  //   }
+  // }
+
+  // diaryEmotions =  TodaysDiary.getEmotions();
+  // $scope.emotionList = diaryEmotions;
+  // $scope.emotionTuples = [];
+  // while(diaryEmotions.length) {
+  //   $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+  // }
+  // $scope.strengths = {};
+
+  // $scope.saveEmotions = function() {
+  //   for (var emotion in $scope.emotionList) {
+  //     TodaysDiary.editEmotion({
+  //       name: emotion.name,
+  //       strength: strengths[emotion.name]
+  //     });
+  //   }
+  //   // if ($scope.myAction.name == null) {
+  //   //   $ionicPopup.alert({
+  //   //     title: 'Missing Data',
+  //   //     template: 'Please choose an action from the list.'
+  //   //   });
+  //   // } else {
+  //   //   if (id == null) {
+  //   //     TodaysDiary.addAction({
+  //   //       id: IdGenerator.getNextId(),
+  //   //       name: $scope.myAction.name,
+  //   //       date: $scope.myAction.date,
+  //   //       urge: $scope.myAction.urge,
+  //   //       actedOn: $scope.myAction.actedOn,
+  //   //       skillRating: $scope.myAction.skillRating,
+  //   //       notes: $scope.myAction.notes
+  //   //     });
+  //   //   } else {
+  //   //     TodaysDiary.editAction({
+  //   //       id: id,
+  //   //       name: $scope.myAction.name,
+  //   //       date: $scope.myAction.date,
+  //   //       urge: $scope.myAction.urge,
+  //   //       actedOn: $scope.myAction.actedOn,
+  //   //       skillRating: $scope.myAction.skillRating,
+  //   //       notes: $scope.myAction.notes
+  //   //     });
+  //   //   }
+  //   //   $state.go('tab.todaysActions');
+  //   // }
+  // }; 
 })
 
 .controller('CopingController', function($scope) {})

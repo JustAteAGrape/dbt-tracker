@@ -5,7 +5,7 @@
 				<img class="emotion-img" src="{{emotion.src}}">
 				<p>{{emotion.name}}</p>
 				<label class="range range-balanced">
-					<input type="range" min="0" max="5" step="1" value=0></input>
+					<input type="range" min="0" max="5" step="1" ng-model="strengths[emotion.name]" value={{emotion.strength}}></input>
 				</label>				
 			</div>
 		</div>
