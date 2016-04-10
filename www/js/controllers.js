@@ -84,27 +84,57 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EmotionsController', function($scope, TodaysDiary, EmotionList) {
+.controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
+  // var diaryEmotions = [];
+  // var emotionPromise = EmotionList.get();
+  // emotionPromise.then(function(result){
+  //   for (var entry in result) {
+  //     var rawEmotion = result[entry];
+  //     if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+  //       TodaysDiary.addEmotion({
+  //         name: rawEmotion.name,
+  //         src: rawEmotion.src,
+  //         strength: 0
+  //       });
+  //     }
+  //   }
+  //   diaryEmotions =  TodaysDiary.getEmotions();
+  //   $scope.emotionTuples = [];
+  //   while(diaryEmotions.length) {
+  //     $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+  //   }
+  // });
   var diaryEmotions = [];
-  var emotionPromise = EmotionList.get();
-  emotionPromise.then(function(result){
-    for (var entry in result) {
-      var rawEmotion = result[entry];
-      if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
-        TodaysDiary.addEmotion({
+  var emotionList = EmotionList.all();
+  for (var entry in emotionList) {
+    var rawEmotion = emotionList[entry];
+    if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+      TodaysDiary.addEmotion({
+        name: rawEmotion.name,
+        src: rawEmotion.src,
+        strength: 0
+      });
+    }
+  }
+  diaryEmotions =  TodaysDiary.getEmotions();
+  $scope.emotionTuples = [];
+  while(diaryEmotions.length) {
+    $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+  };
+
+  $scope.saveEmotions = function() {
+    var saveList = TodaysDiary.getEmotions();
+    for (var entry in saveList) {
+      var rawEmotion = saveList[entry];
+      var newStrength = angular.element(document.getElementById(rawEmotion.name + '.strength')).val();
+      TodaysDiary.editEmotion({
           name: rawEmotion.name,
           src: rawEmotion.src,
-          strength: 0
+          strength: newStrength
         });
-        break;
-      }
-    }
-    $scope.emotionList = result;
-    $scope.emotionTuples = [];
-    while(result.length) {
-      $scope.emotionTuples.push(result.splice(0,2));
-    }
-  });
+      $state.go('tab.track');
+    }    
+  };
 
   // var emotionPromise = EmotionList.get();
   // emotionPromise.then(function(result){

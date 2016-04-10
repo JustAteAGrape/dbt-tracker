@@ -5,12 +5,12 @@
 				<img class="emotion-img" src="{{emotion.src}}">
 				<p>{{emotion.name}}</p>
 				<label class="range range-balanced">
-					<input type="range" min="0" max="5" step="1" ng-model="strengths[emotion.name]" value={{emotion.strength}}></input>
+					<input type="range" id="{{emotion.name}}.strength" min="0" max="5" step="1" value={{emotion.strength}}></input>
 				</label>				
 			</div>
 		</div>
     </ion-content>
-    <div class="button float-button" ng-click="saveAction()">
+    <div class="button float-button" ng-click="saveEmotions()">
 		<span class="height-fix">
 			<a class="content">
 			<i class="ion-checkmark-circled"> </i>
