@@ -105,35 +105,43 @@ angular.module('starter.controllers', [])
   //   }
   // });
   var diaryEmotions = [];
-  var emotionList = EmotionList.all();
-  for (var entry in emotionList) {
-    var rawEmotion = emotionList[entry];
-    if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
-      TodaysDiary.addEmotion({
-        name: rawEmotion.name,
-        src: rawEmotion.src,
-        strength: 0
-      });
-    }
-  }
-  diaryEmotions =  TodaysDiary.getEmotions();
-  $scope.emotionTuples = [];
-  while(diaryEmotions.length) {
-    $scope.emotionTuples.push(diaryEmotions.splice(0,2));
-  };
-
-  $scope.saveEmotions = function() {
-    var saveList = TodaysDiary.getEmotions();
-    for (var entry in saveList) {
-      var rawEmotion = saveList[entry];
-      var newStrength = angular.element(document.getElementById(rawEmotion.name + '.strength')).val();
-      TodaysDiary.editEmotion({
+  var emotionPromise = EmotionList.get();
+  emotionPromise.then(function(result){
+    for (var entry in result) {
+      var rawEmotion = result[entry];
+      if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+        TodaysDiary.addEmotion({
           name: rawEmotion.name,
           src: rawEmotion.src,
-          strength: newStrength
+          strength: 0
         });
-      $state.go('tab.track');
-    }    
+      }
+    }
+    diaryEmotions =  TodaysDiary.getEmotions();
+    $scope.emotionTuples = [];
+    while(diaryEmotions.length) {
+      $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+    };
+  });
+
+  $scope.saveEmotions = function() {
+    Array.prototype.forEach.call(document.querySelectorAll('.col'), function (elem) {
+      TodaysDiary.editEmotion({
+        name: elem.querySelector('.emotionName').textContent,
+        strength: elem.querySelector('.emotionStrength').value
+      });
+    });
+    $state.go('tab.track');
+    // for (var entry in saveList) {
+    //   var rawEmotion = saveList[entry];
+    //   var newStrength = angular.element(document.getElementById(rawEmotion.name + '.strength')).val();
+    //   TodaysDiary.editEmotion({
+    //       name: rawEmotion.name,
+    //       src: rawEmotion.src,
+    //       strength: newStrength
+    //     });
+    //   $state.go('tab.track');
+    // }    
   };
 
   // var emotionPromise = EmotionList.get();

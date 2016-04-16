@@ -3,10 +3,10 @@
 		<div class="row" ng-repeat="emotionTuple in emotionTuples">
 			<div class="col text-center" ng-repeat="emotion in emotionTuple">				
 				<img class="emotion-img" src="{{emotion.src}}">
-				<p>{{emotion.name}}</p>
+				<p class='emotionName'>{{emotion.name}}</p>
 				<label class="range range-balanced">
-					<input type="range" id="{{emotion.name}}.strength" min="0" max="5" step="1" value={{emotion.strength}}></input>
-				</label>				
+					<input type="range" class="emotionStrength" id="{{emotion.name}}.strength" min="0" max="5" step="1" value={{emotion.strength}}></input>
+				</label>			
 			</div>
 		</div>
     </ion-content>

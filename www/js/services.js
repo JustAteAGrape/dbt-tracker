@@ -139,25 +139,25 @@ angular.module('starter.services', [])
   };
 })
 
-// .factory('EmotionList', function($http) {
-//   // Might use a resource here that returns a JSON array
-//   var getEmotions = function() {
-//     return $http.get("data/emotions.json").then(function(response){
-//       return response.data;
-//     });
-//   };
-//   return { get: getEmotions };
-// });
-
 .factory('EmotionList', function($http) {
   // Might use a resource here that returns a JSON array
-  var emotions = [];
-  $http.get("data/emotions.json").success(function(data){
-    emotions = data;
-  })
-  return {
-    all: function() {
-      return emotions;
-    }
+  var getEmotions = function() {
+    return $http.get("data/emotions.json").then(function(response){
+      return response.data;
+    });
   };
+  return { get: getEmotions };
 });
+
+// .factory('EmotionList', function($http) {
+//   // Might use a resource here that returns a JSON array
+//   var emotions = [];
+//   $http.get("data/emotions.json").success(function(data){
+//     emotions = data;
+//   })
+//   return {
+//     all: function() {
+//       return emotions;
+//     }
+//   };
+// });
