@@ -31,19 +31,8 @@ angular.module('starter.services', [])
 
 .factory('TodaysDiary', function($filter, LocalStorage) {
   var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
-  var diary = null;
-
-  if (!(rawDiary == null)) {
-    diary = angular.fromJson(rawDiary);
-  }
-
-  if (diary == null) {
-    diary = {
-      actions: [],
-      emotions: []
-    }
-  }
-
+  
+  var diary = rawDiary == null ? {actions: [], emotions: []} : angular.fromJson(rawDiary);
 
   return {
     getActions: function() {
