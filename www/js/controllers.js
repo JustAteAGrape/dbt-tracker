@@ -117,16 +117,8 @@ angular.module('starter.controllers', [])
         });
       }
     }
-    diaryEmotions =  TodaysDiary.getEmotions();
-
-    $scope.emotionTuples = diaryEmotions.map(function (item, index, array) {
-      if (index % 2 === 0) {
-        return [item, array[index + 1]]
-      }
-    }).filter(function (item) {
-      return item !== undefined;
-    });
-
+    
+    $scope.emotions =  TodaysDiary.getEmotions();
   });
 
   $scope.saveEmotions = function() {

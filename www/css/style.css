@@ -32,10 +32,22 @@ body {
   color: $light;
 }
 
+.emotionContainer {
+  height: 75px;
+  /*border-bottom: 1px solid black;*/
+}
+
+.emotionName {
+  vertical-align: center;
+  font-size: 18px !important;
+}
+
 .emotion-img {
-  height: 20%;
-  width: 20%;
+  height: 40%;
+  width: 40%;
   padding: 0px !important;
+  margin: auto 0;
+
 }
 
 hr {
