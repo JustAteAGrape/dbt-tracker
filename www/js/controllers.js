@@ -122,7 +122,7 @@ angular.module('starter.controllers', [])
   });
 
   $scope.saveEmotions = function() {
-    Array.prototype.forEach.call(document.querySelectorAll('.col'), function (elem) {
+    Array.prototype.forEach.call(document.querySelectorAll('.emotionContainer'), function (elem) {
       TodaysDiary.editEmotion({
         name: elem.querySelector('.emotionName').textContent,
         strength: elem.querySelector('.emotionStrength').value
