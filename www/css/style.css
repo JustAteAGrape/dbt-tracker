@@ -37,6 +37,11 @@ body {
   /*border-bottom: 1px solid black;*/
 }
 
+.emotionPad {
+  height: 150px;
+  /*border-bottom: 1px solid black;*/
+}
+
 .emotionName {
   vertical-align: center;
   font-size: 18px !important;

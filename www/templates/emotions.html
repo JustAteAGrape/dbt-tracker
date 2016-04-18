@@ -1,16 +1,22 @@
 <ion-view view-title="Emotions">
     <ion-content>
-		<div class="row" ng-repeat="emotionTuple in emotionTuples">
-			<div class="col text-center" ng-repeat="emotion in emotionTuple">				
+		<div class="row emotionContainer row-center" ng-repeat="emotion in emotions">
+			<div class='col col-25'>
 				<img class="emotion-img" src="{{emotion.src}}">
-				<p class='emotionName'>{{emotion.name}}</p>
-				<label class="range range-balanced">
-					<input type="range" class="emotionStrength" id="{{emotion.name}}.strength" min="0" max="5" step="1" value={{emotion.strength}}></input>
-				</label>			
 			</div>
+			<div class='col col-25'>
+				<p class='emotionName'>{{emotion.name}}</p>
+			</div>
+			<div class='col'>
+				<label class="range range-balanced">
+				<input type="range" ng-model='emotion.strength' class="emotionStrength" id="{{emotion.name}}.strength" min="0" max="5" step="1" value={{emotion.strength}}></input>
+				<span>{{emotion.strength}}</span>
+			</label>
+			</div>							
 		</div>
+		<div class="row emotionPad"></div>
     </ion-content>
-    <div class="button float-button" ng-click="saveEmotions()">
+	<div class="button float-button" ng-click="saveEmotions()">
 		<span class="height-fix">
 			<a class="content">
 			<i class="ion-checkmark-circled"> </i>
