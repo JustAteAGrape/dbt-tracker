@@ -1,21 +1,14 @@
 angular.module('starter.controllers', [])
 
-.controller('TrackController', function($scope) {})
+.controller('TrackController', function($scope) {
 
-.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysActions, ActionList, SkillRatings, IdGenerator) {
+})
+
+.controller('ActionsController', function($window, $scope, $state, $filter, $ionicPopup, LocalStorage, TodaysDiary, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
-  var curAction = TodaysActions.get(id, null);
-  var addAction = function(action) {
-    TodaysActions.add(action);
-  }
-  var editAction = function(modifiedAction) {
-    TodaysActions.edit(modifiedAction);
-  }
-  var removeAction = function(action) {
-    TodaysActions.remove(action);
-  }
+  var curAction = TodaysDiary.getActionById(id, null);
 
-  $scope.todaysActions = TodaysActions.all();
+  $scope.todaysActions = TodaysDiary.getActions();
   $scope.actionList = ActionList.all();
   $scope.skillRatings = SkillRatings.all();
 
@@ -52,7 +45,7 @@ angular.module('starter.controllers', [])
       });
     } else {
       if (id == null) {
-        addAction({
+        TodaysDiary.addAction({
           id: IdGenerator.getNextId(),
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -62,7 +55,7 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       } else {
-        editAction({
+        TodaysDiary.editAction({
           id: id,
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -72,7 +65,6 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       }
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
       $state.go('tab.todaysActions');
     }
   };
@@ -84,8 +76,7 @@ angular.module('starter.controllers', [])
     });
     confirm.then(function(res) {
       if(res) {
-        removeAction(action);
-        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson($scope.todaysActions));
+        TodaysDiary.removeAction(action);
       } else {
         console.log("user canceld action delete");
       }
@@ -93,35 +84,128 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EmotionsController', function($scope) {})
+.controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
+  // var diaryEmotions = [];
+  // var emotionPromise = EmotionList.get();
+  // emotionPromise.then(function(result){
+  //   for (var entry in result) {
+  //     var rawEmotion = result[entry];
+  //     if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+  //       TodaysDiary.addEmotion({
+  //         name: rawEmotion.name,
+  //         src: rawEmotion.src,
+  //         strength: 0
+  //       });
+  //     }
+  //   }
+  //   diaryEmotions =  TodaysDiary.getEmotions();
+  //   $scope.emotionTuples = [];
+  //   while(diaryEmotions.length) {
+  //     $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+  //   }
+  // });
+  var diaryEmotions = [];
+  var emotionPromise = EmotionList.get();
+  emotionPromise.then(function(result){
+    for (var entry in result) {
+      var rawEmotion = result[entry];
+      if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+        TodaysDiary.addEmotion({
+          name: rawEmotion.name,
+          src: rawEmotion.src,
+          strength: 0
+        });
+      }
+    }
+    
+    $scope.emotions =  TodaysDiary.getEmotions();
+  });
+
+  $scope.saveEmotions = function() {
+    Array.prototype.forEach.call(document.querySelectorAll('.emotionContainer'), function (elem) {
+      TodaysDiary.editEmotion({
+        name: elem.querySelector('.emotionName').textContent,
+        strength: elem.querySelector('.emotionStrength').value
+      });
+    });
+    $state.go('tab.track');
+    // for (var entry in saveList) {
+    //   var rawEmotion = saveList[entry];
+    //   var newStrength = angular.element(document.getElementById(rawEmotion.name + '.strength')).val();
+    //   TodaysDiary.editEmotion({
+    //       name: rawEmotion.name,
+    //       src: rawEmotion.src,
+    //       strength: newStrength
+    //     });
+    //   $state.go('tab.track');
+    // }    
+  };
+
+  // var emotionPromise = EmotionList.get();
+  // emotionPromise.then(function(result){
+  //   rawEmotionList = result;
+  // });
+
+  // for (var rawEmotion in rawEmotionList) {
+  //   if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
+  //     TodaysDiary.addEmotion({
+  //       name: rawEmotion.name,
+  //       src: rawEmotion.src,
+  //       strength: 0
+  //     });
+  //     break;
+  //   }
+  // }
+
+  // diaryEmotions =  TodaysDiary.getEmotions();
+  // $scope.emotionList = diaryEmotions;
+  // $scope.emotionTuples = [];
+  // while(diaryEmotions.length) {
+  //   $scope.emotionTuples.push(diaryEmotions.splice(0,2));
+  // }
+  // $scope.strengths = {};
+
+  // $scope.saveEmotions = function() {
+  //   for (var emotion in $scope.emotionList) {
+  //     TodaysDiary.editEmotion({
+  //       name: emotion.name,
+  //       strength: strengths[emotion.name]
+  //     });
+  //   }
+  //   // if ($scope.myAction.name == null) {
+  //   //   $ionicPopup.alert({
+  //   //     title: 'Missing Data',
+  //   //     template: 'Please choose an action from the list.'
+  //   //   });
+  //   // } else {
+  //   //   if (id == null) {
+  //   //     TodaysDiary.addAction({
+  //   //       id: IdGenerator.getNextId(),
+  //   //       name: $scope.myAction.name,
+  //   //       date: $scope.myAction.date,
+  //   //       urge: $scope.myAction.urge,
+  //   //       actedOn: $scope.myAction.actedOn,
+  //   //       skillRating: $scope.myAction.skillRating,
+  //   //       notes: $scope.myAction.notes
+  //   //     });
+  //   //   } else {
+  //   //     TodaysDiary.editAction({
+  //   //       id: id,
+  //   //       name: $scope.myAction.name,
+  //   //       date: $scope.myAction.date,
+  //   //       urge: $scope.myAction.urge,
+  //   //       actedOn: $scope.myAction.actedOn,
+  //   //       skillRating: $scope.myAction.skillRating,
+  //   //       notes: $scope.myAction.notes
+  //   //     });
+  //   //   }
+  //   //   $state.go('tab.todaysActions');
+  //   // }
+  // }; 
+})
 
 .controller('CopingController', function($scope) {})
 
 .controller('HistoryController', function($scope) {})
 
-.controller('SettingsController', function($scope) {})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
+.controller('SettingsController', function($scope) {});

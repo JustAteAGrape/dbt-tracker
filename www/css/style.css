@@ -31,3 +31,35 @@ body {
   margin-top: -20px; /* Note, this must be half the font size */
   color: $light;
 }
+
+.emotionContainer {
+  height: 75px;
+  /*border-bottom: 1px solid black;*/
+}
+
+.emotionPad {
+  height: 150px;
+  /*border-bottom: 1px solid black;*/
+}
+
+.emotionName {
+  vertical-align: center;
+  font-size: 18px !important;
+}
+
+.emotion-img {
+  height: 40%;
+  width: 40%;
+  padding: 0px !important;
+  margin: auto 0;
+
+}
+
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 100%;               
+  background-color:#000000;
+  height: 1px;
+}

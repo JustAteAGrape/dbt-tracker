@@ -29,50 +29,69 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('TodaysActions', function($http, $filter, $window, $ionicHistory, LocalStorage) {
-  var actions = [];
-  var diary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
-
-  // $window.localStorage.clear();
-  //   $ionicHistory.clearCache();
-  //   $ionicHistory.clearHistory();
-
-  if (!(diary == null)) {
-    actions = angular.fromJson(diary);  
-  }  
+.factory('TodaysDiary', function($filter, LocalStorage) {
+  var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
+  
+  var diary = rawDiary == null ? {actions: [], emotions: []} : angular.fromJson(rawDiary);
 
   return {
-    all: function() {
-      return actions;
+    getActions: function() {
+      return diary.actions;
     },
-    get: function(id, defaultValue) {
-      for (var i in actions) {
-        if (actions[i].id == id) {
-          return actions[i];
+    getActionById: function(id, defaultValue) {
+      for (var i in diary.actions) {
+        if (diary.actions[i].id == id) {
+          return diary.actions[i];
         }
       }
       return defaultValue;
     },
-    add: function(action) {
-      actions.push(action);
+    addAction: function(action) {
+      diary.actions.push(action);
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
     },
-    edit: function(action) {
-      for (var i in actions) {
-        if (actions[i].id == action.id) {
-          actions[i].name = action.name;
-          actions[i].date = action.date;
-          actions[i].urge = action.urge;
-          actions[i].actedOn = action.actedOn;
-          actions[i].skillRating = action.skillRating;
-          actions[i].notes = action.notes;
+    editAction: function(action) {
+      for (var i in diary.actions) {
+        if (diary.actions[i].id == action.id) {
+          diary.actions[i].name = action.name;
+          diary.actions[i].date = action.date;
+          diary.actions[i].urge = action.urge;
+          diary.actions[i].actedOn = action.actedOn;
+          diary.actions[i].skillRating = action.skillRating;
+          diary.actions[i].notes = action.notes;
           break;
+        }        
+      }
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+    },
+    removeAction: function(action) {
+      diary.actions.splice(diary.actions.indexOf(action), 1);
+    },
+    getEmotions: function() {
+      return diary.emotions;
+    },
+    getEmotionByName: function(name, defaultValue) {
+      for (var entry in diary.emotions) {
+        var emotion = diary.emotions[entry];
+        if (emotion.name == name) {
+          return emotion;
         }
       }
     },
-    remove: function(action) {
-      actions.splice(actions.indexOf(action), 1);
-    }
-  };
+    addEmotion: function(emotion) {
+      diary.emotions.push(emotion);
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+    },
+    editEmotion: function(emotion) {
+      for (var i in diary.emotions) {
+        if (diary.emotions[i].name == emotion.name) {
+          diary.emotions[i].strength = emotion.strength;
+          break;
+        }        
+      }
+      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+    },
+  }
 })
 
 .factory('SkillRatings', function($http) {
@@ -107,4 +126,27 @@ angular.module('starter.services', [])
       return actions;
     }
   };
+})
+
+.factory('EmotionList', function($http) {
+  // Might use a resource here that returns a JSON array
+  var getEmotions = function() {
+    return $http.get("data/emotions.json").then(function(response){
+      return response.data;
+    });
+  };
+  return { get: getEmotions };
 });
+
+// .factory('EmotionList', function($http) {
+//   // Might use a resource here that returns a JSON array
+//   var emotions = [];
+//   $http.get("data/emotions.json").success(function(data){
+//     emotions = data;
+//   })
+//   return {
+//     all: function() {
+//       return emotions;
+//     }
+//   };
+// });
