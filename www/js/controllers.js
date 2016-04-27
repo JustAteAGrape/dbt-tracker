@@ -85,25 +85,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
-  // var diaryEmotions = [];
-  // var emotionPromise = EmotionList.get();
-  // emotionPromise.then(function(result){
-  //   for (var entry in result) {
-  //     var rawEmotion = result[entry];
-  //     if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
-  //       TodaysDiary.addEmotion({
-  //         name: rawEmotion.name,
-  //         src: rawEmotion.src,
-  //         strength: 0
-  //       });
-  //     }
-  //   }
-  //   diaryEmotions =  TodaysDiary.getEmotions();
-  //   $scope.emotionTuples = [];
-  //   while(diaryEmotions.length) {
-  //     $scope.emotionTuples.push(diaryEmotions.splice(0,2));
-  //   }
-  // });
   var diaryEmotions = [];
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
@@ -129,79 +110,7 @@ angular.module('starter.controllers', [])
       });
     });
     $state.go('tab.track');
-    // for (var entry in saveList) {
-    //   var rawEmotion = saveList[entry];
-    //   var newStrength = angular.element(document.getElementById(rawEmotion.name + '.strength')).val();
-    //   TodaysDiary.editEmotion({
-    //       name: rawEmotion.name,
-    //       src: rawEmotion.src,
-    //       strength: newStrength
-    //     });
-    //   $state.go('tab.track');
-    // }    
   };
-
-  // var emotionPromise = EmotionList.get();
-  // emotionPromise.then(function(result){
-  //   rawEmotionList = result;
-  // });
-
-  // for (var rawEmotion in rawEmotionList) {
-  //   if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
-  //     TodaysDiary.addEmotion({
-  //       name: rawEmotion.name,
-  //       src: rawEmotion.src,
-  //       strength: 0
-  //     });
-  //     break;
-  //   }
-  // }
-
-  // diaryEmotions =  TodaysDiary.getEmotions();
-  // $scope.emotionList = diaryEmotions;
-  // $scope.emotionTuples = [];
-  // while(diaryEmotions.length) {
-  //   $scope.emotionTuples.push(diaryEmotions.splice(0,2));
-  // }
-  // $scope.strengths = {};
-
-  // $scope.saveEmotions = function() {
-  //   for (var emotion in $scope.emotionList) {
-  //     TodaysDiary.editEmotion({
-  //       name: emotion.name,
-  //       strength: strengths[emotion.name]
-  //     });
-  //   }
-  //   // if ($scope.myAction.name == null) {
-  //   //   $ionicPopup.alert({
-  //   //     title: 'Missing Data',
-  //   //     template: 'Please choose an action from the list.'
-  //   //   });
-  //   // } else {
-  //   //   if (id == null) {
-  //   //     TodaysDiary.addAction({
-  //   //       id: IdGenerator.getNextId(),
-  //   //       name: $scope.myAction.name,
-  //   //       date: $scope.myAction.date,
-  //   //       urge: $scope.myAction.urge,
-  //   //       actedOn: $scope.myAction.actedOn,
-  //   //       skillRating: $scope.myAction.skillRating,
-  //   //       notes: $scope.myAction.notes
-  //   //     });
-  //   //   } else {
-  //   //     TodaysDiary.editAction({
-  //   //       id: id,
-  //   //       name: $scope.myAction.name,
-  //   //       date: $scope.myAction.date,
-  //   //       urge: $scope.myAction.urge,
-  //   //       actedOn: $scope.myAction.actedOn,
-  //   //       skillRating: $scope.myAction.skillRating,
-  //   //       notes: $scope.myAction.notes
-  //   //     });
-  //   //   }
-  //   //   $state.go('tab.todaysActions');
-  //   // }
-  // }; 
 })
 
 .controller('CopingController', function($scope) {})
