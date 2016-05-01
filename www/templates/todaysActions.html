@@ -1,7 +1,7 @@
 <ion-view view-title="Actions">
     <ion-content>
       <ion-list>
-        <ion-item ng-repeat="action in todaysActions" on-hold="removeAction(action)" on-tap="tapAction({{action.id}})">
+        <ion-item ng-repeat="action in todaysActions" on-hold="removeAction(action)" on-tap="tapAction(action.id)">
             {{action.name}}
         </ion-item>
       </ion-list>

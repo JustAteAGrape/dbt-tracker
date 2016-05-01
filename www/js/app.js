@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-track': {
         templateUrl: 'templates/track.html',
-        controller: 'TrackController'
+        controller: 'DiaryController'
       }
     }
   })
@@ -54,7 +54,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-track': {
         templateUrl: 'templates/todaysActions.html',
-        controller: 'ActionsController'
+        controller: 'ActionListController'
       }
     }
   })

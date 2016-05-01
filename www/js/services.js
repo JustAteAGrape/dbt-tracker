@@ -34,6 +34,8 @@ angular.module('starter.services', [])
   
   var diary = rawDiary == null ? {actions: [], emotions: []} : angular.fromJson(rawDiary);
 
+  var changesMade = false;
+
   return {
     getActions: function() {
       return diary.actions;
@@ -48,7 +50,7 @@ angular.module('starter.services', [])
     },
     addAction: function(action) {
       diary.actions.push(action);
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+      changesMade = true;
     },
     editAction: function(action) {
       for (var i in diary.actions) {
@@ -62,10 +64,11 @@ angular.module('starter.services', [])
           break;
         }        
       }
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+      changesMade = true;
     },
     removeAction: function(action) {
       diary.actions.splice(diary.actions.indexOf(action), 1);
+      changesMade = true;
     },
     getEmotions: function() {
       return diary.emotions;
@@ -80,7 +83,7 @@ angular.module('starter.services', [])
     },
     addEmotion: function(emotion) {
       diary.emotions.push(emotion);
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+      changesMade = true;
     },
     editEmotion: function(emotion) {
       for (var i in diary.emotions) {
@@ -89,8 +92,15 @@ angular.module('starter.services', [])
           break;
         }        
       }
-      LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+      changesMade = true;
     },
+    saveUpdates: function() {
+      if (changesMade) {
+        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+        // TODO: Push changes to web service
+      }
+      changesMade = false;
+    }
   }
 })
 
