@@ -2,15 +2,12 @@ angular.module('starter.controllers', [])
 
 .controller('DiaryController', function($scope, $ionicHistory, TodaysDiary) {
   $scope.onBack = function() {
-    if ($scope.saveOnBack) {
-      TodaysDiary.saveUpdates();
-    }
+    TodaysDiary.saveUpdates();
     $ionicHistory.goBack();
   }
 })
 
 .controller('ActionListController', function($window, $scope, $ionicPopup, TodaysDiary) {
-  $scope.saveOnBack = true;
   $scope.todaysActions = TodaysDiary.getActions();
 
   $scope.tapAction = function(actionId) {
@@ -36,7 +33,6 @@ angular.module('starter.controllers', [])
   var id = $state.params.aId;
   var curAction = TodaysDiary.getActionById(id, null);
 
-  $scope.saveOnBack = false;
   $scope.actionList = ActionList.all();
   $scope.skillRatings = SkillRatings.all();
 
@@ -111,8 +107,6 @@ angular.module('starter.controllers', [])
     
     $scope.emotions =  TodaysDiary.getEmotions();
   });
-
-  $scope.saveOnBack = true;
 
   $scope.onEmotionChange = function(emotionName, strength) {
     TodaysDiary.editEmotion({
