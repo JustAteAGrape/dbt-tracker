@@ -107,7 +107,7 @@ angular.module('starter.services', [])
 .factory('SkillRatings', function($http) {
   // Might use a resource here that returns a JSON array
   var skillRatings = [];
-  $http.get("data/copingSkills.json").success(function(data){
+  $http.get("data/copingUsage.json").success(function(data){
     skillRatings = data;
   })
   return {
