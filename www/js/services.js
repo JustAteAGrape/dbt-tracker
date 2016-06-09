@@ -134,15 +134,3 @@ angular.module('starter.services', [])
   return { get: getEmotions };
 });
 
-// .factory('EmotionList', function($http) {
-//   // Might use a resource here that returns a JSON array
-//   var emotions = [];
-//   $http.get("data/emotions.json").success(function(data){
-//     emotions = data;
-//   })
-//   return {
-//     all: function() {
-//       return emotions;
-//     }
-//   };
-// });
