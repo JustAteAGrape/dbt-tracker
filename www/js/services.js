@@ -106,36 +106,22 @@ angular.module('starter.services', [])
 
 .factory('SkillRatings', function($http) {
   // Might use a resource here that returns a JSON array
-  var skillRatings = [];
-  $http.get("data/copingUsage.json").success(function(data){
-    skillRatings = data;
-  })
-  return {
-    all: function() {
-      return skillRatings;
-    },
-    get: function(id, defaultValue) {
-      for (var i in skillRatings) {
-        if (skillRatings[i].id == id) {
-          return skillRatings[i];
-        }
-      }
-      return defaultValue;
-    }
+  var getSkillRatings = function() {
+    return $http.get("data/copingUsage.json").then(function(response){
+      return response.data;
+    })
   };
+  return { get: getSkillRatings };
 })
 
 .factory('ActionList', function($http) {
   // Might use a resource here that returns a JSON array
-  var actions = [];
-  $http.get("data/actions.json").success(function(data){
-    actions = data;
-  })
-  return {
-    all: function() {
-      return actions;
-    }
+  var getActions = function() {
+    return $http.get("data/actions.json").then(function(response){
+      return response.data;
+    })
   };
+  return { get: getActions };
 })
 
 .factory('EmotionList', function($http) {
