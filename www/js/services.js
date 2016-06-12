@@ -134,3 +134,12 @@ angular.module('starter.services', [])
   return { get: getEmotions };
 });
 
+.factory('SkillList', function($http) {
+  // Might use a resource here that returns a JSON array
+  var getCopingSkills = function() {
+    return $http.get("data/copingSkills.json").then(function(response){
+      return response.data;
+    });
+  };
+  return { get: getCopingSkills };
+});
