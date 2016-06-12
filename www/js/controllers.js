@@ -124,22 +124,23 @@ angular.module('starter.controllers', [])
 .controller('CopingController', function($scope, TodaysDiary, SkillList) {
   var copingPromise = SkillList.get();
   copingPromise.then(function(result){
-    for (var entry in result) {
-      var rawCategory = result[entry];
+    for (var categoryIdx in result) {
+      var rawCategory = result[categoryIdx];
       if (TodaysDiary.getCopingSkillCategoryByName(rawCategory.name, null) == null) {
         // Category doesn't exist so safe to assume no underlying skills do either. Build the category then add it to the diary.
         var category = {name: rawCategory.name, skills: []};
-        for (var skill in rawCategory.skills) {
+        for (var skillIdx in rawCategory.skills) {
+          var rawSkill = rawCategory.skills[skillIdx];
           category.skills.push({
-            name: skill.name,
+            name: rawSkill.name,
             used: false
           })
         }
         TodaysDiary.addCopingSkillCategory(category);        
       }
       else {
-        for (var skill in rawCategory.skills) {
-          var rawSkill = rawCategory[skill];
+        for (var skillIdx in rawCategory.skills) {
+          var rawSkill = rawCategory[skillIdx];
           if (TodaysDiary.getCopingSkillByName(rawCategory.name, rawSkill.name, null) == null) {
             TodaysDiary.addCopgingSkill(rawCategory.name, {
               name: rawSkill.name,
