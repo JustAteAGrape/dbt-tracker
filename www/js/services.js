@@ -128,6 +128,7 @@ angular.module('starter.services', [])
           diary.copingSkills[i].skills.push(skill);
           changesMade = true;
         }
+      }
     },
     getCopingSkills: function() {
       return diary.copingSkills;
@@ -170,7 +171,7 @@ angular.module('starter.services', [])
     });
   };
   return { get: getEmotions };
-});
+})
 
 .factory('SkillList', function($http) {
   // Might use a resource here that returns a JSON array
