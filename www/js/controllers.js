@@ -121,8 +121,44 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('CopingController', function($scope) {
+.controller('CopingController', function($scope, TodaysDiary, SkillList) {
+  var copingPromise = SkillList.get();
+  copingPromise.then(function(result){
+    for (var entry in result) {
+      var rawCategory = result[entry];
+      if (TodaysDiary.getCopingSkillCategoryByName(rawCategory.name, null) == null) {
+        // Category doesn't exist so safe to assume no underlying skills do either. Build the category then add it to the diary.
+        var category = {name: rawCategory.name, skills: []};
+        for (var skill in rawCategory.skills) {
+          category.skills.push({
+            name: skill.name,
+            used: false
+          })
+        }
+        TodaysDiary.addCopingSkillCategory(category);        
+      }
+      else {
+        for (var skill in rawCategory.skills) {
+          var rawSkill = rawCategory[skill];
+          if (TodaysDiary.getCopingSkillByName(rawCategory.name, rawSkill.name, null) == null) {
+            TodaysDiary.addCopgingSkill(rawCategory.name, {
+              name: rawSkill.name,
+              used: false
+            });
+          }
+        }
+      }
+    }
+  })
 
+  $scope.copingSkills = TodaysDiary.getCopingSkills();
+
+  $scope.onSkillChange = function(categoryName, skillName, used) {
+    TodaysDiary.editCopingSkill(categoryName, {
+      name: skillName,
+      used: used
+    });
+  };
 })
 
 .controller('HistoryController', function($scope) {})

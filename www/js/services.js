@@ -32,7 +32,7 @@ angular.module('starter.services', [])
 .factory('TodaysDiary', function($filter, LocalStorage) {
   var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
   
-  var diary = rawDiary == null ? {actions: [], emotions: []} : angular.fromJson(rawDiary);
+  var diary = rawDiary == null ? {actions: [], emotions: [], copingSkills: []} : angular.fromJson(rawDiary);
 
   var changesMade = false;
 
@@ -93,6 +93,44 @@ angular.module('starter.services', [])
         }        
       }
       changesMade = true;
+    },
+    getCopingSkillCategoryByName: function(categoryName, defaultValue) {
+      for (var i in diary.copingSkills) {
+        var category = diary.copingSkills[i];
+        if (category.name == categoryName) {
+          return category;
+        }
+      }
+      return defaultValue;
+    },
+    addCopingSkillCategory: function(category) {
+      diary.copingSkills.push(category);
+      changesMade = true;
+    },
+    getCopingSkillByName: function(categoryName, skillName, defaultValue) {
+      for (var i in diary.copingSkills) {
+        var category = diary.copingSkills[i];
+        if (category.name == categoryName) {
+          for (var j in category.skills) {
+            var skill = category[j];
+            if (skill.name == skillName) {
+              return skill;
+            }
+          }
+        }
+      }
+      return defaultValue;
+    },
+    addCopgingSkill: function(categoryName, skill) {
+      for (var i in diary.copingSkills) {
+        var category = diary.copingSkills[i];
+        if (category.name == categoryName) {
+          diary.copingSkills[i].skills.push(skill);
+          changesMade = true;
+        }
+    },
+    getCopingSkills: function() {
+      return diary.copingSkills;
     },
     saveUpdates: function() {
       if (changesMade) {
