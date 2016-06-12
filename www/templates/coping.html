@@ -7,7 +7,9 @@
     				{{category.name}}
     			</ion-item>
     			<ion-item class="item-accordion" ng-repeat="skill in category.skills" ng-show="isCategoryShown(category)">
-    				{{skill.name}}
+    				<ion-checkbox class="checkbox-balanced" ng-model="skill.used" ng-change="onSkillChange(category.name, skill.name, skill.used)" checked={{skill.used}}>
+    					{{skill.name}}
+    				</ion-checkbox>
     			</ion-item>
     		</div>
   		</ion-list>
