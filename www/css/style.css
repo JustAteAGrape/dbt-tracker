@@ -3,6 +3,10 @@ body {
 	cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
 
+.category-title {
+  font-weight: bold;
+}
+
 .float-button {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;

@@ -2,7 +2,7 @@
     <ion-content>
     	<ion-list>
     		<div ng-repeat="category in copingSkills">
-    			<ion-item class="item-stable" ng-click="toggleCategory(category)" ng-class="{active: isCategoryShown(category)}">
+    			<ion-item class="item-stable category-title" ng-click="toggleCategory(category)" ng-class="{active: isCategoryShown(category)}">
     				<i class="icon" ng-class="isCategoryShown(category) ? 'ion-minus' : 'ion-plus'"></i>
     				{{category.name}}
     			</ion-item>
