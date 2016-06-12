@@ -159,6 +159,18 @@ angular.module('starter.controllers', [])
       used: used
     });
   };
+
+  $scope.toggleCategory = function(category) {
+    if ($scope.isCategoryShown(category)) {
+      $scope.shownCopingCategory = null;
+    } else {
+      $scope.shownCopingCategory = category;
+    }
+  };
+
+  $scope.isCategoryShown = function(category) {
+    return $scope.shownCopingCategory === category;
+  };
 })
 
 .controller('HistoryController', function($scope) {})
