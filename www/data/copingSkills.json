@@ -1,34 +1,135 @@
 [
 	  {
-		  "id": 0,
-      "name": "Not thought about or used"
-  	}, 
-  	{
-    	"id": 1,
-    	"name": "Thought about, not used, didn't want to"
-  	}, 
-  	{
-    	"id": 2,
-    	"name": "Thought about, not used, wanted to"
-  	}, 
-  	{
-    	"id": 3,
-    	"name": "Tried but couldn't use them"
-  	}, 
-  	{
-    	"id": 4,
-    	"name": "Tried, could do them but they didn't help"
-  	},
-  	{
-    	"id": 5,
-    	"name": "Tried, could use them, helped"
-  	},
-    {
-      "id": 6,
-      "name": "Didn't try, used them, didn't help"
+      "id" : 0,
+      "name" : "Core Mindfulness",
+		  "skills" : [
+        {
+          "id" : 0,
+          "name" : "Wise Mind"
+        },
+        {
+          "id" : 1,
+          "name" : "Observe"
+        },
+        {
+          "id" : 2,
+          "name" : "Describe"
+        },
+        {
+          "id" : 3,
+          "name" : "Participate"
+        },
+        {
+          "id" : 4,
+          "name" : "Don't Judge"
+        },
+        {
+          "id" : 5,
+          "name" : "Stay Focussed"
+        },
+        {
+          "id" : 6,
+          "name" : "Do What Works"
+        }]
     },
     {
-      "id": 7,
-      "name": "Didn't try, used them, helped"
-    }
+      "id" : 1,
+      "name" : "Emotion Regulation",
+      "skills" : [
+        {
+          "id" : 0,
+          "name" : "Identify Emotions"
+        },
+        {
+          "id" : 1,
+          "name" : "PLEASE"
+        },
+        {
+          "id" : 2,
+          "name" : "MASTER"
+        },
+        {
+          "id" : 3,
+          "name" : "Pleasant Activities"
+        },
+        {
+          "id" : 4,
+          "name" : "Work Toward Goals"
+        },
+        {
+          "id" : 5,
+          "name" : "Build Structure"
+        },
+        {
+          "id" : 6,
+          "name" : "Act Oposite of Current Emotion"
+        }]
+    },
+    {
+      "id" : 2,
+      "name" : "Interpersonal Effectiveness",
+      "skills" : [
+        {
+          "id" : 0,
+          "name" : "DEAR MAN"
+        },
+        {
+          "id" : 1,
+          "name" : "GIVE"
+        },
+        {
+          "id" : 2,
+          "name" : "FAST"
+        },
+        {
+          "id" : 3,
+          "name" : "Cheerleading Statements"
+        }]
+    },
+    {
+      "id" : 3,
+      "name" : "Distress Tolerance",
+      "skills" : [
+        {
+          "id" : 0,
+          "name" : "ACCEPTS"
+        },
+        {
+          "id" : 1,
+          "name" : "Self-soothe"
+        },
+        {
+          "id" : 2,
+          "name" : "Pros and Cons"
+        },
+        {
+          "id" : 3,
+          "name" : "Radical Acceptance"
+        }]
+    },
+    {
+      "id" : 4,
+      "name" : "Walk the Middle Path",
+      "skills" : [
+        {
+          "id" : 0,
+          "name" : "Positive Reinforcement"
+        },
+        {
+          "id" : 1,
+          "name" : "Validate Self"
+        },
+        {
+          "id" : 2,
+          "name" : "Validate Someone Else"
+        },
+        {
+          "id" : 3,
+          "name" : "Think Dialectically"
+        },
+        {
+          "id" : 4,
+          "name" : "Act Dialectically"
+        }]
+    },
 ]
