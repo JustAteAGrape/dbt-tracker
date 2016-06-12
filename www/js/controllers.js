@@ -33,8 +33,14 @@ angular.module('starter.controllers', [])
   var id = $state.params.aId;
   var curAction = TodaysDiary.getActionById(id, null);
 
-  $scope.actionList = ActionList.all();
-  $scope.skillRatings = SkillRatings.all();
+  var actionPromise = ActionList.get();
+  actionPromise.then(function(result){
+    $scope.actionList = result;
+  });
+  var skillRatingPromise = SkillRatings.get();
+  skillRatingPromise.then(function(result){
+    $scope.skillRatings = result;
+  });
 
   if (curAction == null) {
     $scope.title = "New Action"
