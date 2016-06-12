@@ -97,7 +97,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
-  var diaryEmotions = [];
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
     for (var entry in result) {
@@ -122,7 +121,9 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('CopingController', function($scope) {})
+.controller('CopingController', function($scope) {
+
+})
 
 .controller('HistoryController', function($scope) {})
 
