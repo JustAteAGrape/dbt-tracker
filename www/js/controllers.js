@@ -99,8 +99,7 @@ angular.module('starter.controllers', [])
 .controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
-    for (var entry in result) {
-      var rawEmotion = result[entry];
+    angular.forEach(result, function(rawEmotion, index){
       if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
         TodaysDiary.addEmotion({
           name: rawEmotion.name,
@@ -108,7 +107,7 @@ angular.module('starter.controllers', [])
           strength: 0
         });
       }
-    }
+    });
     
     $scope.emotions =  TodaysDiary.getEmotions();
   });
@@ -124,32 +123,29 @@ angular.module('starter.controllers', [])
 .controller('CopingController', function($scope, TodaysDiary, SkillList) {
   var copingPromise = SkillList.get();
   copingPromise.then(function(result){
-    for (var categoryIdx in result) {
-      var rawCategory = result[categoryIdx];
+    angular.forEach(result, function(rawCategory, index){
       if (TodaysDiary.getCopingSkillCategoryByName(rawCategory.name, null) == null) {
         // Category doesn't exist so safe to assume no underlying skills do either. Build the category then add it to the diary.
         var category = {name: rawCategory.name, skills: []};
-        for (var skillIdx in rawCategory.skills) {
-          var rawSkill = rawCategory.skills[skillIdx];
+        angular.forEach(rawCategory.skills, function(rawSkill, index){
           category.skills.push({
             name: rawSkill.name,
             used: false
-          })
-        }
+          });
+        });
         TodaysDiary.addCopingSkillCategory(category);        
       }
       else {
-        for (var skillIdx in rawCategory.skills) {
-          var rawSkill = rawCategory[skillIdx];
+        angular.forEach(rawCategory.skills, function(rawSkill, index){
           if (TodaysDiary.getCopingSkillByName(rawCategory.name, rawSkill.name, null) == null) {
             TodaysDiary.addCopgingSkill(rawCategory.name, {
               name: rawSkill.name,
               used: false
             });
           }
-        }
+        });
       }
-    }
+    });
   })
 
   $scope.copingSkills = TodaysDiary.getCopingSkills();
