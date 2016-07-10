@@ -30,73 +30,86 @@ angular.module('starter.services', [])
 })
 
 .factory('TodaysDiary', function($filter, LocalStorage) {
-  var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
-  
-  var diary = rawDiary == null ? {actions: [], emotions: [], copingSkills: []} : angular.fromJson(rawDiary);
+  //var rawData = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
+  var rawData = LocalStorage.get('dbt-diary', null);
+  var diaryData = rawData == null ? {diary: []} : angular.fromJson(rawData);
+  var todaysEntry = null;
+
+  for (var i=0, len = diaryData.diary.length; i < len; i++) {
+    var entry = diaryData.diary[i];
+    if (entry.date === $filter('date')(Date.now(), 'yyyyMMdd')) {
+      todaysEntry = entry;
+      break;
+    }
+  }
+
+  if (todaysEntry == null) {
+    todaysEntry = {date: $filter('date')(Date.now(), 'yyyyMMdd'), actions: [], emotions: [], copingSkills: []};
+  }
 
   var changesMade = false;
 
   return {
     getActions: function() {
-      return diary.actions;
+      return todaysEntry.actions;
     },
     getActionById: function(id, defaultValue) {
-      for (var i in diary.actions) {
-        if (diary.actions[i].id == id) {
-          return diary.actions[i];
+      for (var i in todaysEntry.actions) {
+        if (todaysEntry.actions[i].id == id) {
+          return todaysEntry.actions[i];
         }
       }
       return defaultValue;
     },
     addAction: function(action) {
-      diary.actions.push(action);
+      todaysEntry.actions.push(action);
       changesMade = true;
     },
     editAction: function(action) {
-      for (var i in diary.actions) {
-        if (diary.actions[i].id == action.id) {
-          diary.actions[i].name = action.name;
-          diary.actions[i].date = action.date;
-          diary.actions[i].urge = action.urge;
-          diary.actions[i].actedOn = action.actedOn;
-          diary.actions[i].skillRating = action.skillRating;
-          diary.actions[i].notes = action.notes;
+      for (var i in todaysEntry.actions) {
+        if (todaysEntry.actions[i].id == action.id) {
+          todaysEntry.actions[i].name = action.name;
+          todaysEntry.actions[i].date = action.date;
+          todaysEntry.actions[i].urge = action.urge;
+          todaysEntry.actions[i].actedOn = action.actedOn;
+          todaysEntry.actions[i].skillRating = action.skillRating;
+          todaysEntry.actions[i].notes = action.notes;
           break;
         }        
       }
       changesMade = true;
     },
     removeAction: function(action) {
-      diary.actions.splice(diary.actions.indexOf(action), 1);
+      todaysEntry.actions.splice(todaysEntry.actions.indexOf(action), 1);
       changesMade = true;
     },
     getEmotions: function() {
-      return diary.emotions;
+      return todaysEntry.emotions;
     },
     getEmotionByName: function(name, defaultValue) {
-      for (var entry in diary.emotions) {
-        var emotion = diary.emotions[entry];
+      for (var entry in todaysEntry.emotions) {
+        var emotion = todaysEntry.emotions[entry];
         if (emotion.name == name) {
           return emotion;
         }
       }
     },
     addEmotion: function(emotion) {
-      diary.emotions.push(emotion);
+      todaysEntry.emotions.push(emotion);
       changesMade = true;
     },
     editEmotion: function(emotion) {
-      for (var i in diary.emotions) {
-        if (diary.emotions[i].name == emotion.name) {
-          diary.emotions[i].strength = emotion.strength;
+      for (var i in todaysEntry.emotions) {
+        if (todaysEntry.emotions[i].name == emotion.name) {
+          todaysEntry.emotions[i].strength = emotion.strength;
           break;
         }        
       }
       changesMade = true;
     },
     getCopingSkillCategoryByName: function(categoryName, defaultValue) {
-      for (var i in diary.copingSkills) {
-        var category = diary.copingSkills[i];
+      for (var i in todaysEntry.copingSkills) {
+        var category = todaysEntry.copingSkills[i];
         if (category.name == categoryName) {
           return category;
         }
@@ -104,12 +117,12 @@ angular.module('starter.services', [])
       return defaultValue;
     },
     addCopingSkillCategory: function(category) {
-      diary.copingSkills.push(category);
+      todaysEntry.copingSkills.push(category);
       changesMade = true;
     },
     getCopingSkillByName: function(categoryName, skillName, defaultValue) {
-      for (var i in diary.copingSkills) {
-        var category = diary.copingSkills[i];
+      for (var i in todaysEntry.copingSkills) {
+        var category = todaysEntry.copingSkills[i];
         if (category.name == categoryName) {
           for (var j in category.skills) {
             var skill = category[j];
@@ -122,20 +135,28 @@ angular.module('starter.services', [])
       return defaultValue;
     },
     addCopgingSkill: function(categoryName, skill) {
-      for (var i in diary.copingSkills) {
-        var category = diary.copingSkills[i];
+      for (var i in todaysEntry.copingSkills) {
+        var category = todaysEntry.copingSkills[i];
         if (category.name == categoryName) {
-          diary.copingSkills[i].skills.push(skill);
+          todaysEntry.copingSkills[i].skills.push(skill);
           changesMade = true;
         }
       }
     },
     getCopingSkills: function() {
-      return diary.copingSkills;
+      return todaysEntry.copingSkills;
     },
     saveUpdates: function() {
       if (changesMade) {
-        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
+        for (var i=0, len = diaryData.diary.length; i < len; i++) {
+          var entry = diaryData.diary[i];
+          if (entry.date === $filter('date')(Date.now(), 'yyyyMMdd')) {
+            diaryData.diary.splice(i,1);
+            break;
+          }
+        }
+        diaryData.diary.push(todaysEntry);
+        LocalStorage.set('dbt-diary', angular.toJson(diaryData));
         // TODO: Push changes to web service
       }
       changesMade = false;
