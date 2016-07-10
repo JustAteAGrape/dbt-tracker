@@ -1,5 +1,17 @@
 <ion-view view-title="Coping Skills">
     <ion-content>
-      <h2 class="title">Coping Skills Placeholder</h2>
+    	<ion-list>
+    		<div ng-repeat="category in copingSkills">
+    			<ion-item class="item-stable category-title" ng-click="toggleCategory(category)" ng-class="{active: isCategoryShown(category)}">
+    				<i class="icon" ng-class="isCategoryShown(category) ? 'ion-minus' : 'ion-plus'"></i>
+    				{{category.name}}
+    			</ion-item>
+    			<ion-item class="item-accordion" ng-repeat="skill in category.skills" ng-show="isCategoryShown(category)">
+    				<ion-checkbox class="checkbox-balanced" ng-model="skill.used" ng-change="onSkillChange(category.name, skill.name, skill.used)" checked={{skill.used}}>
+    					{{skill.name}}
+    				</ion-checkbox>
+    			</ion-item>
+    		</div>
+  		</ion-list>
     </ion-content>
 </ion-view>
