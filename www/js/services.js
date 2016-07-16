@@ -29,25 +29,109 @@ angular.module('starter.services', [])
   };
 })
 
+.factory('Diary', function($filter, LocalStorage) {
+  var diaryService = {};
+  var rawData = LocalStorage.get('dbt-diary', null);
+  // TODO: rename to diary
+  var diaryData = rawData == null ? {diary: []} : angular.fromJson(rawData);
+
+  diaryData.sort(function(a,b){
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  // TODO: Allow the size of the diary view to be configurable from the server side by the therapist
+  var spliceSize = diaryData.diary.length > 7 ? diaryData.diary.length - 7 : 0;
+  diaryData.splice(0, spliceSize);
+
+  var changesMade = spliceSize > 0;
+
+  var getEntryByDate = function(date) {
+    return diaryData[date];
+  };
+
+  // Diary Service contains business logic for accessing and manipulating the diary entries
+  diaryService.getDiarySummary = function() {
+    var diarySummary = [];
+    angular.forEach(diaryData, function(entry, key) {
+      diarySummary.push({
+        date: key,
+        actionCount: entry.actions.length
+      })
+    });
+    return diarySummary;
+  }
+
+  diaryService.getActionsByDate = function(date) {
+    var entry = getEntryByDate(date);
+    return entry.actions;
+  }
+
+  diaryService.getActionById = function(date, id, defaultValue) {
+    var entry = getActionByDate(date);
+    var actionReturn = defaultValue;
+    angular.forEach(todaysEntry.actions, function(action, index){
+        if (action.id == id){
+          actionReturn = action;
+        }
+      });
+    return actionReturn;
+  }
+
+  diaryService.addAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    entry.actions.push(action);
+    changesMade = true;
+  }
+
+  diaryService.editAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    angular.forEach(entry.actions, function(entryAction, index){
+      if (entryAction.id == action.id) {
+        entryAction.name = action.name;
+        entryAction.date = action.date;
+        entryAction.urge = action.urge;
+        entryAction.actedOn = action.actedOn;
+        entryAction.skillRating = action.skillRating;
+        entryAction.notes = action.notes;
+      }
+    });
+    changesMade = true;
+  }
+
+  diaryService.removeAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    entry.actions.splice(entry.actions.indexOf(action), 1);
+    changesMade = true;
+  }
+
+  return diaryService;
+})
+
 .factory('TodaysDiary', function($filter, LocalStorage) {
-  //var rawData = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
   var rawData = LocalStorage.get('dbt-diary', null);
   var diaryData = rawData == null ? {diary: []} : angular.fromJson(rawData);
   var todaysEntry = null;
 
-  for (var i=0, len = diaryData.diary.length; i < len; i++) {
-    var entry = diaryData.diary[i];
-    if (entry.date === $filter('date')(Date.now(), 'yyyyMMdd')) {
-      todaysEntry = entry;
-      break;
-    }
+  diaryData.diary.sort(function(a,b){
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  if (diaryData.diary[diaryData.diary.length - 1].date === $filter('date')(Date.now(), 'yyyyMMdd')) {
+    todaysEntry = diaryData.diary[diaryData.diary.length - 1];
   }
 
+  // TODO: Allow the size of the diary view to be configurable from the server side by the therapist
+  var spliceSize = 0;
   if (todaysEntry == null) {
     todaysEntry = {date: $filter('date')(Date.now(), 'yyyyMMdd'), actions: [], emotions: [], copingSkills: []};
+    spliceSize = diaryData.diary.length > 6 ? diaryData.diary.length - 6 : 0;
   }
+  else {
+    spliceSize = diaryData.diary.length > 7 ? diaryData.diary.length - 7 : 0;
+  }
+  diaryData.diary.splice(0, spliceSize);
 
-  var changesMade = false;
+  var changesMade = spliceSize > 0;
 
   return {
     getActions: function() {
