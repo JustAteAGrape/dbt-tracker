@@ -1,17 +1,20 @@
 angular.module('starter.controllers', [])
 
-.controller('DiaryController', function($scope, $ionicHistory, TodaysDiary) {
+.controller('DiaryController', function($scope, $ionicHistory, DiaryService) {
   $scope.onBack = function() {
-    TodaysDiary.saveUpdates();
+    DiaryService.saveUpdates();
     $ionicHistory.goBack();
   }
 })
 
-.controller('ActionListController', function($window, $scope, $ionicPopup, TodaysDiary) {
-  $scope.todaysActions = TodaysDiary.getActions();
+.controller('ActionListController', function($location, $scope, $state, $ionicPopup, DiaryService) {
+  var date = $state.params.aDate;
+  $scope.todaysActions = DiaryService.getActionsByDate(date);
 
   $scope.tapAction = function(actionId) {
-    $window.location.href = '#/tab/editAction/' + actionId;
+    $location.url().includes('diary') ?
+      $location.url('/tab/diary/action/edit/' + date + '/' + actionId) :
+      $location.url('/tab/today/action/edit/' + date + '/' + actionId);
   };
 
   $scope.removeAction = function(action) {
@@ -21,17 +24,24 @@ angular.module('starter.controllers', [])
     });
     confirm.then(function(res) {
       if(res) {
-        TodaysDiary.removeAction(action);
+        DiaryService.removeAction(date, action);
       } else {
         console.log("user canceld action delete");
       }
     });
   };
+
+  $scope.newAction = function() {
+    $location.url().includes('diary') ?
+      $location.url('/tab/diary/action/new/' + date) :
+      $location.url('/tab/today/action/new/' + date);
+  };
 })
 
-.controller('ActionsController', function($scope, $state, $filter, $ionicPopup, LocalStorage, TodaysDiary, ActionList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
-  var curAction = TodaysDiary.getActionById(id, null);
+  var date = $state.params.aDate;
+  var curAction = DiaryService.getActionById(date, id, null);
 
   var actionPromise = ActionList.get();
   actionPromise.then(function(result){
@@ -71,7 +81,7 @@ angular.module('starter.controllers', [])
       });
     } else {
       if (id == null) {
-        TodaysDiary.addAction({
+        DiaryService.addAction(date, {
           id: IdGenerator.getNextId(),
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -81,7 +91,7 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       } else {
-        TodaysDiary.editAction({
+        DiaryService.editAction(date, {
           id: id,
           name: $scope.myAction.name,
           date: $scope.myAction.date,
@@ -91,17 +101,20 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       }
-      $state.go('tab.todaysActions');
+      $location.url().includes('diary') ?
+        $location.url('/tab/diary/actions/' + date) :
+        $location.url('/tab/today/actions/' + date);
     }
   };
 })
 
-.controller('EmotionsController', function($scope, $state, TodaysDiary, EmotionList) {
+.controller('EmotionsController', function($scope, $state, DiaryService, EmotionList) {
+  var date = $state.params.eDate;
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
     angular.forEach(result, function(rawEmotion, index){
-      if (TodaysDiary.getEmotionByName(rawEmotion.name, null) == null) {
-        TodaysDiary.addEmotion({
+      if (DiaryService.getEmotionByName(date, rawEmotion.name, null) == null) {
+        DiaryService.addEmotion(date, {
           name: rawEmotion.name,
           src: rawEmotion.src,
           strength: 0
@@ -109,22 +122,23 @@ angular.module('starter.controllers', [])
       }
     });
     
-    $scope.emotions =  TodaysDiary.getEmotions();
+    $scope.emotions =  DiaryService.getEmotionsByDate(date);
   });
 
   $scope.onEmotionChange = function(emotionName, strength) {
-    TodaysDiary.editEmotion({
+    DiaryService.editEmotion(date, {
         name: emotionName,
         strength: strength
       });
   };
 })
 
-.controller('CopingController', function($scope, TodaysDiary, SkillList) {
+.controller('CopingController', function($scope, $state, DiaryService, SkillList) {
+  var date = $state.params.cDate;
   var copingPromise = SkillList.get();
   copingPromise.then(function(result){
     angular.forEach(result, function(rawCategory, index){
-      if (TodaysDiary.getCopingSkillCategoryByName(rawCategory.name, null) == null) {
+      if (DiaryService.getCopingSkillCategoryByName(date, rawCategory.name, null) == null) {
         // Category doesn't exist so safe to assume no underlying skills do either. Build the category then add it to the diary.
         var category = {name: rawCategory.name, skills: []};
         angular.forEach(rawCategory.skills, function(rawSkill, index){
@@ -133,12 +147,12 @@ angular.module('starter.controllers', [])
             used: false
           });
         });
-        TodaysDiary.addCopingSkillCategory(category);        
+        DiaryService.addCopingSkillCategory(date, category);        
       }
       else {
         angular.forEach(rawCategory.skills, function(rawSkill, index){
-          if (TodaysDiary.getCopingSkillByName(rawCategory.name, rawSkill.name, null) == null) {
-            TodaysDiary.addCopgingSkill(rawCategory.name, {
+          if (DiaryService.getCopingSkillByName(date, rawCategory.name, rawSkill.name, null) == null) {
+            DiaryService.addCopgingSkill(date, rawCategory.name, {
               name: rawSkill.name,
               used: false
             });
@@ -148,10 +162,10 @@ angular.module('starter.controllers', [])
     });
   })
 
-  $scope.copingSkills = TodaysDiary.getCopingSkills();
+  $scope.copingSkills = DiaryService.getCopingSkillsByDate(date);
 
   $scope.onSkillChange = function(categoryName, skillName, used) {
-    TodaysDiary.editCopingSkill(categoryName, {
+    DiaryService.editCopingSkill(date, categoryName, {
       name: skillName,
       used: used
     });
@@ -170,6 +184,32 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('HistoryController', function($scope) {})
+.controller('HistoryController', function($location, $scope, DiaryService) {
+  $scope.diarySummary = DiaryService.getDiarySummary();
+
+  $scope.tapAction = function(date) {
+    $location.url('/tab/diary/actions/' + date);
+  };
+
+  $scope.tapEmotion = function(date) {
+    $location.url('/tab/diary/emotions/' + date);
+  };
+
+  $scope.tapCoping = function(date) {
+    $location.url('/tab/diary/coping/' + date);
+  };
+
+  $scope.toggleEntry = function(entry) {
+    if ($scope.isEntryShown(entry)) {
+      $scope.shownSummaryEntry = null;
+    } else {
+      $scope.shownSummaryEntry = entry;
+    }
+  };
+
+  $scope.isEntryShown = function(entry) {
+    return $scope.shownSummaryEntry === entry;
+  };
+})
 
 .controller('SettingsController', function($scope) {});
