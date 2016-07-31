@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DiaryController', function($scope, $ionicHistory, DiaryService) {
+.controller('NavBarController', function($scope, $ionicHistory, DiaryService) {
   $scope.onBack = function() {
     DiaryService.saveUpdates();
     $ionicHistory.goBack();
@@ -188,7 +188,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('HistoryController', function($location, $scope, DiaryService) {
+.controller('DiaryController', function($location, $scope, DiaryService) {
   $scope.diarySummary = DiaryService.getDiarySummary();
 
   $scope.tapAction = function(date) {
