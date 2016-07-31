@@ -39,15 +39,15 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, $ionicHistory, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, $ionicHistory, LocalStorage, DiaryService, ActionTypeList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
   var curAction = DiaryService.getActionById(date, id, null);
 
-  var actionPromise = ActionList.get();
+  var actionPromise = ActionTypeList.get();
   actionPromise.then(function(result){
-    $scope.actionList = result;
+    $scope.actionTypeList = result;
   });
   var skillRatingPromise = SkillRatings.get();
   skillRatingPromise.then(function(result){
