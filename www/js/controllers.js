@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
 .controller('ActionListController', function($location, $scope, $state, $ionicPopup, DiaryService) {
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
-  $scope.todaysActions = DiaryService.getActionsByDate(date);
+  $scope.actionList = DiaryService.getActionsByDate(date);
 
   $scope.tapAction = function(actionId) {
     $location.url().includes('diary') ?
