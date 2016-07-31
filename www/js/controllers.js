@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, $ionicHistory, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
@@ -105,9 +105,7 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       }
-      $location.url().includes('diary') ?
-        $location.url('/tab/diary/actions/' + date) :
-        $location.url('/tab/today/actions/' + date);
+      $ionicHistory.goBack();
     }
   };
 })
