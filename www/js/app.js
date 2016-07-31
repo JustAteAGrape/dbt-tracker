@@ -38,88 +38,133 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.track', {
-    url: '/track',
+  // Today tab
+  .state('tab.today', {
+    url: '/today',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/track.html',
         controller: 'DiaryController'
       }
     }
   })
-
-  .state('tab.todaysActions', {
-    url: '/todaysActions',
+  .state('tab.actions', {
+    url: '/today/actions/:aDate',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/todaysActions.html',
         controller: 'ActionListController'
       }
     }
   })
-
   .state('tab.editAction', {
-    url: '/editAction/:aId',
+    url: '/today/action/edit/:aDate/:aId',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/action.html',
         controller: 'ActionsController'
       },
 
     }
   })
-
   .state('tab.new', {
-    url: '/new',
+    url: '/today/action/new/:aDate',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/action.html',
         controller: 'ActionsController'
       }
     }
   })
-
   .state('tab.emotions', {
-    url: '/emotions',
+    url: '/today/emotions/:eDate',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/emotions.html',
         controller: 'EmotionsController'
       }
     }
   })
-
  .state('tab.coping', {
-    url: '/coping',
+    url: '/today/coping/:cDate',
     views: {
-      'tab-track': {
+      'tab-today': {
         templateUrl: 'templates/coping.html',
         controller: 'CopingController'
       }
     }
   })
 
-  .state('tab.history', {
-      url: '/history',
-      views: {
-        'tab-history': {
-          templateUrl: 'templates/history.html',
-          controller: 'HistoryController'
-        }
+  // Diary Tab
+  .state('tab.diary', {
+    url: '/diary',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/history.html',
+        controller: 'HistoryController'
       }
-    })
-    .state('tab.settings', {
-      url: '/settings',
-      views: {
-        'tab-settings': {
-          templateUrl: 'templates/settings.html',
-          controller: 'SettingsController'
-        }
+    }
+  })
+  .state('tab.diaryActions', {
+    url: '/diary/actions/:aDate',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/todaysActions.html',
+        controller: 'ActionListController'
       }
-    })
+    }
+  })
+  .state('tab.editDiaryAction', {
+    url: '/diary/action/edit/:aDate/:aId',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/action.html',
+        controller: 'ActionsController'
+      },
+
+    }
+  })
+  .state('tab.newDiaryAction', {
+    url: '/diary/action/new/:aDate',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/action.html',
+        controller: 'ActionsController'
+      }
+    }
+  })
+  .state('tab.diaryEmotions', {
+    url: '/diary/emotions/:eDate',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/emotions.html',
+        controller: 'EmotionsController'
+      }
+    }
+  })
+ .state('tab.diaryCoping', {
+    url: '/diary/coping/:cDate',
+    views: {
+      'tab-diary': {
+        templateUrl: 'templates/coping.html',
+        controller: 'CopingController'
+      }
+    }
+  })
+  
+
+  // Settings tab
+  .state('tab.settings', {
+    url: '/settings',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsController'
+      }
+    }
+  })
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/track');
+  $urlRouterProvider.otherwise('/tab/today');
 
 });

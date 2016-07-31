@@ -1,5 +1,25 @@
-<ion-view view-title="History">
+<ion-view view-title="Diary">
     <ion-content>
-      <h2 class="title">History Placeholder</h2>
+    	<ion-list>
+    		<div ng-repeat="entry in diarySummary">
+    			<ion-item class="item-stable entry-title" ng-click="toggleEntry(entry)" ng-class="{active: isEntryShown(entry)}">
+    				<i class="icon" ng-class="isEntryShown(entry) ? 'ion-minus' : 'ion-plus'"></i>
+    				{{entry.dateFormatted}}
+    			</ion-item>
+    			<ion-item class="item-accordion" ng-show="isEntryShown(entry)">
+    				<ion-item class="item-stable" ng-click="tapAction(entry.date)">
+    					Actions
+    					<span class="badge badge-assertive">{{entry.actionCount}}</span>
+    				</ion-item>
+    				<ion-item class="item-stable" ng-click="tapEmotion(entry.date)">
+    					Emotions
+    				</ion-item>
+    				<ion-item class="item-stable" ng-click="tapCoping(entry.date)">
+    					Coping Skills
+    				</ion-item>
+    			</ion-item>
+    		</div>
+  		</ion-list>
     </ion-content>
 </ion-view>
+

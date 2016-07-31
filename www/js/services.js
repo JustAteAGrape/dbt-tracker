@@ -29,128 +29,204 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('TodaysDiary', function($filter, LocalStorage) {
-  var rawDiary = LocalStorage.get($filter('date')(Date.now(), 'yyyyMMdd'), null);
-  
-  var diary = rawDiary == null ? {actions: [], emotions: [], copingSkills: []} : angular.fromJson(rawDiary);
-
+.factory('DiaryService', function($filter, LocalStorage) {
   var changesMade = false;
+  var diaryService = {};
+  var rawData = LocalStorage.get('dbt-diary', null);
+  // TODO: rename to diary
+  var diaryData = rawData == null ? [] : angular.fromJson(rawData);
 
-  return {
-    getActions: function() {
-      return diary.actions;
-    },
-    getActionById: function(id, defaultValue) {
-      var actionReturn = defaultValue;
-      angular.forEach(diary.actions, function(action, index){
+  diaryData.sort(function(a,b){
+    return b.date - a.date;
+  });
+
+  // TODO: Allow the size of the diary view to be configurable from the server side by the therapist
+
+  var saveDiary = function() {
+    if (changesMade) {
+      LocalStorage.set('dbt-diary', angular.toJson(diaryData));
+      // TODO: Push changes to web service
+    }
+    changesMade = false;
+  };
+
+  var getEntryByDate = function(date) {
+    matchingEntry = null;
+    angular.forEach(diaryData, function (entry, key) {
+      if ($filter('date')(entry.date, 'yyyyMMdd') == 
+          $filter('date')(date, 'yyyyMMdd'))
+      {
+        matchingEntry = entry;
+      }
+    })
+    return matchingEntry;
+  };
+
+  var todaysEntry = getEntryByDate(Date.now())
+  if (todaysEntry == null)
+  {
+    diaryData.push({
+      date: Date.now().toString(),
+      actions: [],
+      emotions: [],
+      copingSkills: []
+    })
+    changesMade = true;
+    saveDiary();
+  }
+
+  // Diary Service contains business logic for accessing and manipulating the diary entries
+  diaryService.saveUpdates = saveDiary; 
+
+  diaryService.getDiarySummary = function() {
+    var diarySummary = [];
+    angular.forEach(diaryData, function(entry, key) {
+      diarySummary.push({
+        date: entry.date,
+        dateFormatted: $filter('date')(entry.date, 'EEEE, MMM d, yyyy'),
+        actionCount: entry.actions.length
+      })
+    });
+    return diarySummary;
+  }
+
+  diaryService.getActionsByDate = function(date) {
+    var entry = getEntryByDate(date);
+    return entry.actions;
+  };
+
+  diaryService.getActionById = function(date, id, defaultValue) {
+    var entry = getEntryByDate(date);
+    var actionReturn = defaultValue;
+    angular.forEach(entry.actions, function(action, index){
         if (action.id == id){
           actionReturn = action;
         }
       });
-      return actionReturn;
-    },
-    addAction: function(action) {
-      diary.actions.push(action);
-      changesMade = true;
-    },
-    editAction: function(action) {
-      angular.forEach(diary.actions, function(diaryAction, index){
-        if (diaryAction.id == action.id) {
-          diaryAction.name = action.name;
-          diaryAction.date = action.date;
-          diaryAction.urge = action.urge;
-          diaryAction.actedOn = action.actedOn;
-          diaryAction.skillRating = action.skillRating;
-          diaryAction.notes = action.notes;
-        }
-      });
-      changesMade = true;
-    },
-    removeAction: function(action) {
-      diary.actions.splice(diary.actions.indexOf(action), 1);
-      changesMade = true;
-    },
-    getEmotions: function() {
-      return diary.emotions;
-    },
-    getEmotionByName: function(name, defaultValue) {
-      var emotionReturn = defaultValue;
-      angular.forEach(diary.emotions, function(diaryEmotion, index){
-        if (diaryEmotion.name == name) {
-          emotionReturn = diaryEmotion;
-        }
-      });
-      return emotionReturn;
-    },
-    addEmotion: function(emotion) {
-      diary.emotions.push(emotion);
-      changesMade = true;
-    },
-    editEmotion: function(emotion) {
-      angular.forEach(diary.emotions, function(diaryEmotion, index){
-        if (diaryEmotion.name == emotion.name) {
-          diaryEmotion.strength = emotion.strength;
-        }
-      });
-      changesMade = true;
-    },
-    getCopingSkillCategoryByName: function(categoryName, defaultValue) {
-      copingSkillCategoryReturn = defaultValue;
-      angular.forEach(diary.copingSkills, function(diaryCopingSkillCategory, index){
-        if (diaryCopingSkillCategory.name == categoryName) {
-          copingSkillCategoryReturn = diaryCopingSkillCategory;
-        }
-      });
-      return copingSkillCategoryReturn;
-    },
-    addCopingSkillCategory: function(category) {
-      diary.copingSkills.push(category);
-      changesMade = true;
-    },
-    getCopingSkillByName: function(categoryName, skillName, defaultValue) {
-      var copingSkillReturn = defaultValue;
-      angular.forEach(diary.copingSkills, function(diaryCopingSkillCategory, index){
-        if (diaryCopingSkillCategory.name == categoryName) {
-          angular.forEach(diaryCopingSkillCategory.skills, function(diaryCopingSkill, index){
-            if (diaryCopingSkill.name == skillName) {
-              copingSkillReturn = diaryCopingSkill;
-            }
-          });
-        }
-      });
-      return copingSkillReturn;
-    },
-    addCopgingSkill: function(categoryName, skill) {
-      angular.forEach(diary.copingSkills, function(diaryCopingSkillCategory, index){
-        if (diaryCopingSkillCategory.name == categoryName) {
-          diaryCopingSkillCategory.skills.push(skill);
-          changesMade = true;
-        }
-      });
-    },
-    getCopingSkills: function() {
-      return diary.copingSkills;
-    },
-    editCopingSkill: function(categoryName, skill) {
-      angular.forEach(diary.copingSkills, function(diaryCopingSkillCategory, index){
-        if (diaryCopingSkillCategory.name == categoryName) {
-          angular.forEach(diaryCopingSkillCategory.skills, function(diaryCopingSkill, index){
-            if (diaryCopingSkill.name == skill.name) {
-              diaryCopingSkill.used = skill.used;
-            }
-          });
-        }
-      });
-      changesMade = true;
-    },
-    saveUpdates: function() {
-      if (changesMade) {
-        LocalStorage.set($filter('date')(Date.now(), 'yyyyMMdd'), angular.toJson(diary));
-        // TODO: Push changes to web service
+    return actionReturn;
+  };
+
+  diaryService.addAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    entry.actions.push(action);
+    changesMade = true;
+  };
+
+  diaryService.editAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    angular.forEach(entry.actions, function(entryAction, index){
+      if (entryAction.id == action.id) {
+        entryAction.name = action.name;
+        entryAction.date = action.date;
+        entryAction.urge = action.urge;
+        entryAction.actedOn = action.actedOn;
+        entryAction.skillRating = action.skillRating;
+        entryAction.notes = action.notes;
       }
-      changesMade = false;
-    }
-  }
+    });
+    changesMade = true;
+  };
+
+  diaryService.removeAction = function(date, action) {
+    var entry = getEntryByDate(date);
+    entry.actions.splice(entry.actions.indexOf(action), 1);
+    changesMade = true;
+  };
+
+  diaryService.getEmotionsByDate = function(date) {
+      var entry = getEntryByDate(date);
+      return entry.emotions;
+  };
+
+  diaryService.getEmotionByName = function(date, name, defaultValue) {
+    var entry = getEntryByDate(date);
+    var emotionReturn = defaultValue;
+    angular.forEach(entry.emotions, function(diaryEmotion, index){
+      if (diaryEmotion.name == name) {
+        emotionReturn = diaryEmotion;
+      }
+    });
+    return emotionReturn;
+  };
+
+  diaryService.addEmotion = function(date, emotion) {
+    var entry = getEntryByDate(date);
+    entry.emotions.push(emotion);
+    changesMade = true;
+  };
+
+  diaryService.editEmotion = function(date, emotion) {
+    var entry = getEntryByDate(date);
+    angular.forEach(entry.emotions, function(diaryEmotion, index) {
+      if (diaryEmotion.name == emotion.name) {
+        diaryEmotion.strength = emotion.strength;
+      }
+    });
+    changesMade = true;
+  };
+
+  diaryService.getCopingSkillCategoryByName = function(date, categoryName, defaultValue) {
+    var entry = getEntryByDate(date);
+    copingSkillCategoryReturn = defaultValue;
+    angular.forEach(entry.copingSkills, function(diaryCopingSkillCategory, index){
+      if (diaryCopingSkillCategory.name == categoryName) {
+        copingSkillCategoryReturn = diaryCopingSkillCategory;
+      }
+    });
+    return copingSkillCategoryReturn;
+  };
+
+  diaryService.addCopingSkillCategory = function(date, category) {
+    var entry = getEntryByDate(date);
+    entry.copingSkills.push(category);
+    changesMade = true;
+  };
+
+  diaryService.getCopingSkillByName = function(date, categoryName, skillName, defaultValue) {
+    var entry = getEntryByDate(date);
+    var copingSkillReturn = defaultValue;
+    angular.forEach(entry.copingSkills, function(diaryCopingSkillCategory, index){
+      if (diaryCopingSkillCategory.name == categoryName) {
+        angular.forEach(diaryCopingSkillCategory.skills, function(diaryCopingSkill, index){
+          if (diaryCopingSkill.name == skillName) {
+            copingSkillReturn = diaryCopingSkill;
+          }
+        });
+      }
+    });
+    return copingSkillReturn;
+  };
+
+  diaryService.addCopgingSkill = function(date, categoryName, skill) {
+    var entry = getEntryByDate(date);
+    angular.forEach(entry.copingSkills, function(diaryCopingSkillCategory, index) {
+      if (diaryCopingSkillCategory.name == categoryName) {
+        diaryCopingSkillCategory.skills.push(skill);
+        changesMade = true;
+      }
+    });
+  };
+
+  diaryService.getCopingSkillsByDate = function(date) {
+    var entry = getEntryByDate(date);
+    return entry.copingSkills;
+  };
+
+  diaryService.editCopingSkill = function(date, categoryName, skill) {
+    var entry = getEntryByDate(date);
+    angular.forEach(entry.copingSkills, function(diaryCopingSkillCategory, index) {
+      if (diaryCopingSkillCategory.name == categoryName) {
+        angular.forEach(diaryCopingSkillCategory.skills, function(diaryCopingSkill, index) {
+          if (diaryCopingSkill.name == skill.name) {
+            diaryCopingSkill.used = skill.used;
+          }
+        });
+      }
+    });
+    changesMade = true;
+  };
+
+  return diaryService;
 })
 
 .factory('SkillRatings', function($http) {
