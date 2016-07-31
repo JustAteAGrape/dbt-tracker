@@ -9,6 +9,7 @@ angular.module('starter.controllers', [])
 
 .controller('ActionListController', function($location, $scope, $state, $ionicPopup, DiaryService) {
   var date = $state.params.aDate;
+  date = (date == null || date === "") ? Date.now() : date;
   $scope.todaysActions = DiaryService.getActionsByDate(date);
 
   $scope.tapAction = function(actionId) {
@@ -41,6 +42,7 @@ angular.module('starter.controllers', [])
 .controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var date = $state.params.aDate;
+  date = (date == null || date === "") ? Date.now() : date;
   var curAction = DiaryService.getActionById(date, id, null);
 
   var actionPromise = ActionList.get();
@@ -55,7 +57,8 @@ angular.module('starter.controllers', [])
   if (curAction == null) {
     $scope.title = "New Action"
     $scope.myAction = {
-      date: new Date(),
+      displayDate: $filter('date')(Date.now(), 'EEEE, MMM d, yyyy'),
+      date: Date.now().toString(),
       urge: 2.5,
       actedOn: false,
       skillRating: SkillRatings.get(0, null)
@@ -65,7 +68,8 @@ angular.module('starter.controllers', [])
     $scope.myAction = {
       id: curAction.id,
       name: curAction.name,
-      date: new Date(curAction.date),
+      displayDate: $filter('date')(curAction.date, 'EEEE, MMM d, yyyy'),
+      date: curAction.date,
       urge: curAction.urge,
       actedOn: curAction.actedOn,
       skillRating: curAction.skillRating,
@@ -110,6 +114,7 @@ angular.module('starter.controllers', [])
 
 .controller('EmotionsController', function($scope, $state, DiaryService, EmotionList) {
   var date = $state.params.eDate;
+  date = (date == null || date === "") ? Date.now() : date;
   var emotionPromise = EmotionList.get();
   emotionPromise.then(function(result){
     angular.forEach(result, function(rawEmotion, index){
@@ -135,6 +140,7 @@ angular.module('starter.controllers', [])
 
 .controller('CopingController', function($scope, $state, DiaryService, SkillList) {
   var date = $state.params.cDate;
+  date = (date == null || date === "") ? Date.now() : date;
   var copingPromise = SkillList.get();
   copingPromise.then(function(result){
     angular.forEach(result, function(rawCategory, index){
