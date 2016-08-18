@@ -80,3 +80,8 @@ hr {
   padding-left: 30px;
   padding-right: 10px;
 }
+
+.coping-select {
+  width: 100%;
+  color: gray;
+}
