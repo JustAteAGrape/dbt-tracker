@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
     $scope.myAction = {
       displayDate: $filter('date')(Date.now(), 'EEEE, MMM d, yyyy'),
       date: Date.now().toString(),
-      urge: 2.5,
+      urge: 0,
       actedOn: false,
       skillRating: SkillRatings.get(0, null)
     }
