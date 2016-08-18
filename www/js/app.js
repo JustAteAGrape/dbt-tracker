@@ -43,8 +43,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/today',
     views: {
       'tab-today': {
-        templateUrl: 'templates/track.html',
-        controller: 'DiaryController'
+        templateUrl: 'templates/todaysDiary.html',
+        controller: 'NavBarController'
       }
     }
   })
@@ -52,7 +52,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/today/actions/:aDate',
     views: {
       'tab-today': {
-        templateUrl: 'templates/todaysActions.html',
+        templateUrl: 'templates/actionList.html',
         controller: 'ActionListController'
       }
     }
@@ -100,8 +100,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/diary',
     views: {
       'tab-diary': {
-        templateUrl: 'templates/history.html',
-        controller: 'HistoryController'
+        templateUrl: 'templates/diary.html',
+        controller: 'DiaryController'
       }
     }
   })
@@ -109,7 +109,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/diary/actions/:aDate',
     views: {
       'tab-diary': {
-        templateUrl: 'templates/todaysActions.html',
+        templateUrl: 'templates/actionList.html',
         controller: 'ActionListController'
       }
     }
