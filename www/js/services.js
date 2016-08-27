@@ -239,7 +239,7 @@ angular.module('starter.services', [])
   return { get: getSkillRatings };
 })
 
-.factory('ActionList', function($http) {
+.factory('ActionTypeList', function($http) {
   // Might use a resource here that returns a JSON array
   var getActions = function() {
     return $http.get("data/actions.json").then(function(response){

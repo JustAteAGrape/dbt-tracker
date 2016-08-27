@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DiaryController', function($scope, $ionicHistory, DiaryService) {
+.controller('NavBarController', function($scope, $ionicHistory, DiaryService) {
   $scope.onBack = function() {
     DiaryService.saveUpdates();
     $ionicHistory.goBack();
@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
 .controller('ActionListController', function($location, $scope, $state, $ionicPopup, DiaryService) {
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
-  $scope.todaysActions = DiaryService.getActionsByDate(date);
+  $scope.actionList = DiaryService.getActionsByDate(date);
 
   $scope.tapAction = function(actionId) {
     $location.url().includes('diary') ?
@@ -39,15 +39,15 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, LocalStorage, DiaryService, ActionList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, $ionicHistory, LocalStorage, DiaryService, ActionTypeList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
   var curAction = DiaryService.getActionById(date, id, null);
 
-  var actionPromise = ActionList.get();
+  var actionPromise = ActionTypeList.get();
   actionPromise.then(function(result){
-    $scope.actionList = result;
+    $scope.actionTypeList = result;
   });
   var skillRatingPromise = SkillRatings.get();
   skillRatingPromise.then(function(result){
@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
     $scope.myAction = {
       displayDate: $filter('date')(Date.now(), 'EEEE, MMM d, yyyy'),
       date: Date.now().toString(),
-      urge: 2.5,
+      urge: 0,
       actedOn: false,
       skillRating: SkillRatings.get(0, null)
     }
@@ -105,9 +105,7 @@ angular.module('starter.controllers', [])
           notes: $scope.myAction.notes
         });
       }
-      $location.url().includes('diary') ?
-        $location.url('/tab/diary/actions/' + date) :
-        $location.url('/tab/today/actions/' + date);
+      $ionicHistory.goBack();
     }
   };
 })
@@ -190,7 +188,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('HistoryController', function($location, $scope, DiaryService) {
+.controller('DiaryController', function($location, $scope, DiaryService) {
   $scope.diarySummary = DiaryService.getDiarySummary();
 
   $scope.tapAction = function(date) {

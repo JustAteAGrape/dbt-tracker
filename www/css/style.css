@@ -71,3 +71,17 @@ hr {
   background-color:#000000;
   height: 1px;
 }
+
+.urge-label {
+  padding-right: 30px;
+}
+
+.urge-value {
+  padding-left: 30px;
+  padding-right: 10px;
+}
+
+.coping-select {
+  width: 100%;
+  color: gray;
+}
