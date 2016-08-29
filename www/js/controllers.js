@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ActionsController', function($location, $scope, $state, $filter, $ionicPopup, $ionicHistory, LocalStorage, DiaryService, ActionTypeList, SkillRatings, IdGenerator) {
+.controller('ActionsController', function($scope, $state, $filter, $ionicPopup, $ionicHistory, DiaryService, ActionTypeList, SkillRatings, IdGenerator) {
   var id = $state.params.aId;
   var date = $state.params.aDate;
   date = (date == null || date === "") ? Date.now() : date;
