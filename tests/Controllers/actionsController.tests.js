@@ -138,8 +138,87 @@ describe('ActionsController', function() {
 			expect(scope.myAction.skillRating.rating).toEqual('serviceTest');
 			expect(scope.myAction.notes).toEqual('test note');
 		});	
+
+		it('defines saveAction on the scope', function() {
+			params = { aDate: 123, aId: null };
+			stateMock = { params: params };
+			innerFilterMock = jasmine.createSpy().and.returnValue('New Date');
+			dateFilterMock = jasmine.createSpy().and.returnValue(innerFilterMock);
+			createController(stateMock, dateFilterMock);
+
+			expect(scope.saveAction).toBeDefined(true);
+		});
 	})
 
-	// TODO: Test saveAction
+	describe('saveAction', function() {
+
+		it('should present a popup warning if no action is chosen', function() {
+			params = { aDate: 123, aId: null };
+			stateMock = { params: params };
+			innerFilterMock = jasmine.createSpy().and.returnValue('New Date');
+			dateFilterMock = jasmine.createSpy().and.returnValue(innerFilterMock);
+			createController(stateMock, dateFilterMock);			
+			spyOn(ionicPopupMock, 'alert');
+			scope.myAction = {name: null};
+
+			scope.saveAction();
+
+			expect(ionicPopupMock.alert).toHaveBeenCalled();
+		});
+
+		it('should add the action to the diary if it does not exist', function() {
+			params = { aDate: 123, aId: null };
+			stateMock = { params: params };
+			innerFilterMock = jasmine.createSpy().and.returnValue('New Date');
+			dateFilterMock = jasmine.createSpy().and.returnValue(innerFilterMock);
+			createController(stateMock, dateFilterMock);			
+			spyOn(diaryServiceMock, 'addAction');
+			scope.myAction = {
+								id: null,
+								name: 'test',
+								date: 123456789,
+								urge: 5,
+								actedOn: true,
+								skillRating: {rating: 'serviceTest'},
+								notes: 'test note'
+							};
+
+			scope.saveAction();
+			
+			var expectedAction = {
+								id: 1,
+								name: 'test',
+								date: 123456789,
+								urge: 5,
+								actedOn: true,
+								skillRating: {rating: 'serviceTest'},
+								notes: 'test note'
+							};
+			expect(diaryServiceMock.addAction).toHaveBeenCalledWith(123, expectedAction);
+		});
+
+		it('should update the action in the diary if it already exists', function() {
+			params = { aDate: 123, aId: 1 };
+			stateMock = { params: params };
+			innerFilterMock = jasmine.createSpy().and.returnValue('New Date');
+			dateFilterMock = jasmine.createSpy().and.returnValue(innerFilterMock);
+			createController(stateMock, dateFilterMock);			
+			spyOn(diaryServiceMock, 'editAction');
+			var testAction = {
+								id: 1,
+								name: 'test',
+								date: 123456789,
+								urge: 5,
+								actedOn: true,
+								skillRating: {rating: 'serviceTest'},
+								notes: 'test note'
+							};
+			scope.myAction = testAction;
+
+			scope.saveAction();
+			
+			expect(diaryServiceMock.editAction).toHaveBeenCalledWith(123, testAction);
+		})
+	});
 
 });
