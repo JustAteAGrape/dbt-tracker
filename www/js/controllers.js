@@ -216,4 +216,34 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('SettingsController', function($scope) {});
+.controller('AboutController', function($scope, AboutInfo) {
+  var aboutInfo = {
+    author: '',
+    company: '',
+    department: '',
+    phone: '',
+    email: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: ''
+  };
+
+  var aboutPromise = AboutInfo.get();
+  aboutPromise.then(function(result){
+    aboutInfo.author = result.author;
+    aboutInfo.company = result.company;
+    aboutInfo.department = result.department;
+    aboutInfo.phone = result.phone;
+    aboutInfo.email = result.email;
+    aboutInfo.address1 = result.address1;
+    aboutInfo.address2 = result.address2;
+    aboutInfo.city = result.city;
+    aboutInfo.state = result.state;
+    aboutInfo.zip = result.zip;
+  });
+
+  $scope.about = aboutInfo;
+  console.log($scope.about);
+});
