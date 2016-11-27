@@ -112,7 +112,7 @@ describe('ActionsController', function() {
 			expect(scope.myAction.id).not.toBeDefined();
 			expect(scope.myAction.displayDate).toEqual('New Date');
 			expect(scope.myAction.date).toEqual('9876');
-			expect(scope.myAction.urge).toEqual(0);
+			expect(scope.myAction.urge).toEqual(1);
 			expect(scope.myAction.actedOn).toEqual(false);
 			// TODO: Fix this
 			//expect(scope.myAction.skillRating.rating).toEqual('providerTest');			
