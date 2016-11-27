@@ -245,5 +245,4 @@ angular.module('starter.controllers', [])
   });
 
   $scope.about = aboutInfo;
-  console.log($scope.about);
 });
