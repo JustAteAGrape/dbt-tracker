@@ -153,13 +153,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
   
 
-  // Settings tab
-  .state('tab.settings', {
-    url: '/settings',
+  // About tab
+  .state('tab.about', {
+    url: '/about',
     views: {
-      'tab-settings': {
-        templateUrl: 'templates/settings.html',
-        controller: 'SettingsController'
+      'tab-about': {
+        templateUrl: 'templates/about.html',
+        controller: 'AboutController'
       }
     }
   })

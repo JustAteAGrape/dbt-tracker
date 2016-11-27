@@ -300,4 +300,14 @@ angular.module('starter.services', [])
     });
   };
   return { get: getCopingSkills };
+})
+
+.factory('AboutInfo', function($http) {
+  // Might use a resource here that returns a JSON array
+  var getAboutInfo = function() {
+    return $http.get("data/about.json").then(function(response) {
+      return response.data;
+    });
+  };
+  return { get: getAboutInfo };
 });
